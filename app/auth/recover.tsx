@@ -3,11 +3,6 @@ import { StatusBar } from "expo-status-bar";
 import React, { Dispatch, SetStateAction } from "react";
 import { FlatList, Pressable, Text, TextInput, View } from "react-native";
 
-type itemData = {
-  id: number;
-  word: string
-}
-
 type itemProps = {
   index: number;
   word: string;
@@ -18,16 +13,25 @@ export default function Page() {
   const [terms, setTerms] = React.useState(false);
   const [mnemonic, setMnemonic] = React.useState([]);
 
-  const renderItem = (item:itemProps)=>{
-
+  const renderItem = ({text}:itemProps)=>{
+    return (
+      <View className="block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <Text className="tracking-tight text-gray-900 dark:text-white">{text}</Text>
+      </View>
   }
 
   return (
     <View className="flex-1 p-6 justify-end dark:bg-black">
+      <FlatList
+        data={mnemonic}
+        renderItem={renderItem}
+        keyExtractor={(item) => item}
+      />
       <View className="my-auto">
         <Text className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Enter seed phrase</Text>
         <TextInput
           numberOfLines={2}
+          onValueChange={value => setMnemonic(value.split(" "))}
           className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-red-500 focus:border-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500"
         />
       </View>
