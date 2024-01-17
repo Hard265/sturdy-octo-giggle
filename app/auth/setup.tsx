@@ -36,8 +36,8 @@ export default function Page() {
       <View className="flex flex-row gap-y-2 flex-wrap mt-4 mb-8" >
         {
           mnemonic.trim().split(" ").map((item: string)=>(
-              <View className="block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                <Text className="tracking-tight text-gray-900 dark:text-white">
+              <View className="p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700>
+                <Text className="font-semibold text-gray-900 dark:text-white">
                   {item}
                 </Text>
               </View>
