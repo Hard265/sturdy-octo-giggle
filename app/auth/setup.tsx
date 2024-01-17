@@ -1,4 +1,4 @@
-import { View, FlatList, Text } from "react-native";
+import { View, FlatList, Text, Pressable } from "react-native";
 import React from "react";
 
 export default function Page(){
