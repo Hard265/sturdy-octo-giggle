@@ -1,21 +1,25 @@
 import { Link, router } from "expo-router";
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 
-
-export default function Page(){
-    return (
-        <View className="flex-1 items-end p-8">
-            <Text className="text-3xl font-black mb-3">Welcome Text</Text>
-            <Link className="mb-3" href="/auth/setup/">
-                <Pressable className="w-full py-2.5 px-5 rounded-lg border border-gray-200 bg-blue-700" >
-                    <Text className="text-sm font-medium text-gray-900">Create account</Text>
-                </Pressable>
-            </Link>
-            <Link className="mb-3" href="/auth/recover/">
-                <Pressable className="w-full py-2.5 px-5 rounded-lg border border-gray-200 bg-transparent" >
-                    <Text className="text-sm font-medium text-gray-900">Recover account</Text>
-                </Pressable>
-            </Link>
-        </View>
-    )
+export default function Page() {
+  return (
+    <View className="flex-1 items-center justify-end p-8 dark:bg-black">
+      <Pressable
+        className="w-full flex justify-center items-center bg-gray-800 rounded-lg px-5 py-3.5 mb-3 dark:bg-white"
+        onPress={() => router.push("/auth/setup")}
+      >
+        <Text className="text-white dark:text-gray-800 font-medium text-sm uppercase">
+          create account
+        </Text>
+      </Pressable>
+      <Pressable
+        className="w-full flex justify-center items-center py-3.5 px-5 me-2 mb-2 bg-transparent rounded-lg border border-gray-300 dark:bg-transparent dark:border-gray-600"
+        onPress={() => router.push("/auth/recover")}
+      >
+        <Text className="text-sm font-medium text-gray-900  dark:text-gray-400 uppercase">
+          import from seed
+        </Text>
+      </Pressable>
+    </View>
+  );
 }

@@ -2,10 +2,7 @@
 import React from "react";
 import { Text, Pressable, ViewStyle, TextStyle } from "react-native";
 
-enum RBtnVariant {
-  Outlined= "outlined",
-  Flat= "flat",
-}
+type RBtnVariant = "outlined" | "flat";
 
 type RBtnProps = {
   title: string;
@@ -14,37 +11,37 @@ type RBtnProps = {
   color?: string;
 };
 
-const getStyle = (color: string, variant: RBtnVariant): {container: string, text: string} => {
-  switch(variant){
-    case RBtnVariant.Outlined:
+const getStyle = (color: string, variant: RBtnVariant): { container: string, text: string } => {
+  switch (variant) {
+    case "outlined":
       return {
-        container: "py-2.5 px-5 border border-$color-300 rounded-lg bg-transparent",
-        text: "text-$color-700"
+        container: "w-full flex justify-center items-center py-3.5 px-5 rounded-lg border border-$color-300".replace("$color", color),
+        text: "text-sm font-medium text-$color-800".replace("$color", color)
       }
-    case RBtnVariant.Flat:
+    case "flat":
       return {
-        container: "py-2.5 px-5 bg-$color-500 rounded-lg",
-        text: "text-white"
+        container: "w-full flex justify-center items-center py-3.5 px-5  rounded-lg bg-$color-600 mb-3".replace("$color", color),
+        text: "text-sm font-medium text-white"
       }
     default:
       return {
-      container: "",
-      text: ""
-    }
+        container: "",
+        text: ""
+      }
   }
 }
 
-const RBtn: React.FC<RBtnProps> = ({ title, onPress, variant, color="blue" }: RBtnProps) => {
+const RBtn: React.FC<RBtnProps> = ({ title, onPress, variant, color = "blue" }: RBtnProps) => {
   const [focus, setFocus] = React.useState(false);
 
   const style = getStyle(color, variant)
 
 
   return (
-    <Pressable onPress={onPress} className={style.container.replace("$color", color)}>
-      <Text className={style.text.replace("$color", color)}>{title}</Text>
+    <Pressable onPress={onPress} className={style.container}>
+      <Text className={style.text}>{title}</Text>
     </Pressable>
   );
 };
 
-export {RBtn as default, RBtnVariant};
+export { RBtn as default, RBtnVariant };
