@@ -5,9 +5,12 @@ export function generateMnemonic() {
   const woldList = require("../assets/wordlist/english.json");
   const initialEntropy = Crypto.getRandomBytes(strength / 8);
 
-  const mnemonic = entropyToMnemonic(initialEntropy, woldList);
+  return entropyToMnemonic(initialEntropy, woldList);
 }
 
+/**
+ * @returns {string}
+ */
 function entropyToMnemonic(entropy, wordList) {
   const entropyBits = bytesToBinary(Array.from(entropy));
   const checksumBits = deriveChecksumBits(entropy);

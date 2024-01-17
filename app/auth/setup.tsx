@@ -6,28 +6,28 @@ import { useColorScheme } from "nativewind";
 import { router } from "expo-router";
 import { generateMnemonic } from "../../util/cryptograpy";
 
+type itemProps = {
+  item: string;
+};
+
 export default function Page() {
   const [terms, setTerms] = React.useState(false);
-  const [mnemonic, setMnemonic] = React.useState([
-    "you",
-    "the",
-    "bring",
-    "director",
-    "pixel",
-  ]);
+  const [mnemonic, setMnemonic] = React.useState("");
   const { colorScheme, setColorScheme } = useColorScheme();
 
-  useEffect(()=>{
-    generateMnemonic()
-  }, [])
+  useEffect(() => {
+    setMnemonic(generateMnemonic());
+  }, []);
 
-  // const renderItem = ()=>{
-  //   return (
-  //     <View className="block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-  //       <Text className="tracking-tight text-gray-900 dark:text-white">{text}</Text>
-  //     </View>
-  //   )
-  // }
+  const renderItem = ({ item }: itemProps) => {
+    return (
+      <View className="block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <Text className="tracking-tight text-gray-900 dark:text-white">
+          {item}
+        </Text>
+      </View>
+    );
+  };
 
   return (
     <View className="flex-1 p-4 pt-12 dark:bg-black">
@@ -40,19 +40,19 @@ export default function Page() {
         />
         <View className="block w-3/4">
           <Text className="block text-sm text-red-800  dark:text-red-400 text-wrap">
-          Please write down your backup seed phrase on a piece of paper and
-          store it in a safe place. Do not store it on your computer, phone, or
-          online. Do not share it with anyone.
-        </Text>
+            Please write down your backup seed phrase on a piece of paper and
+            store it in a safe place. Do not store it on your computer, phone,
+            or online. Do not share it with anyone.
+          </Text>
         </View>
-        
       </View>
-      {/* <FlatList
+      <FlatList
         className="my-auto"
-        data={mnemonic}
+        contentContainerStyle={{display: "flex", flexDirection: "row", gap: 10, flexWrap: "wrap"}}
+        data={mnemonic.trim().split(" ")}
         renderItem={renderItem}
-        keyExtractor={item=>item}
-      /> */}
+        keyExtractor={(item) => item}
+      />
       <View className="mt-auto">
         <Pressable
           className="flex items-center flex-row mb-4"
