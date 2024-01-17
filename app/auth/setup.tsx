@@ -16,7 +16,7 @@ export default function Page(){
     <View className="flex-1 p-4 dark:bg-black ">
       <View className="flex items-center p-4 mb-4 text-red-800 border-l-4 rounded-lg border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800">
         <Text className="ms-3 text-sm font-medium">
-          Please write down your backup seed phrase on a piece of paper or a metal plate and store it in a safe place. Do not store it on your computer, phone, or online. Do not share it with anyone.
+          Please write down your backup seed phrase on a piece of paper and store it in a safe place. Do not store it on your computer, phone, or online. Do not share it with anyone.
         </Text>
       </View>
       <FlatList
