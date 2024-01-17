@@ -6,9 +6,6 @@ import { useColorScheme } from "nativewind";
 import { router } from "expo-router";
 import { generateMnemonic } from "../../util/cryptograpy";
 
-type itemProps = {
-  item: string;
-};
 
 export default function Page() {
   const [terms, setTerms] = React.useState(false);
@@ -18,16 +15,6 @@ export default function Page() {
   useEffect(() => {
     setMnemonic(generateMnemonic());
   }, []);
-
-  const renderItem = ({ item }: itemProps) => {
-    return (
-      <View className="block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-        <Text className="tracking-tight text-gray-900 dark:text-white">
-          {item}
-        </Text>
-      </View>
-    );
-  };
 
   return (
     <View className="flex-1 p-4 pt-12 dark:bg-black">
@@ -46,13 +33,17 @@ export default function Page() {
           </Text>
         </View>
       </View>
-      <FlatList
-        className="my-auto"
-        contentContainerStyle={{display: "flex", flexDirection: "row", gap: 10, flexWrap: "wrap"}}
-        data={mnemonic.trim().split(" ")}
-        renderItem={renderItem}
-        keyExtractor={(item) => item}
-      />
+      <View className="flex flex-row gap-y-2 flex-wrap mt-4 mb-8" >
+        {
+          mnemonic.trim().split(" ").map((item: string)=>(
+              <View className="block max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                <Text className="tracking-tight text-gray-900 dark:text-white">
+                  {item}
+                </Text>
+              </View>
+          ))
+        }
+      </View>
       <View className="mt-auto">
         <Pressable
           className="flex items-center flex-row mb-4"
