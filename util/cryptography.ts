@@ -10,7 +10,7 @@ export function generateMnemonic(): string {
 
 function entropyToMnemonic(entropy: Uint8Array, wordList: string[]): string {
   const entropyBits: string = bytesToBinary(Array.from(entropy));
-  const checksumBits: string = deriveChecksumBits(entropy);
+  const checksumBits: Promise<string> = deriveChecksumBits(entropy);
 
   const bits: string = entropyBits + checksumBits;
   const chunks: RegExpMatchArray | null = bits.match(/(.{1,11})/g);

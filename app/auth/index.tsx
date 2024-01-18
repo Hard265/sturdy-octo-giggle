@@ -1,9 +1,10 @@
-import { Link, router } from "expo-router";
+import { Link, Stack, router } from "expo-router";
 import { View, Text, Pressable } from "react-native";
 
 export default function Page() {
   return (
     <View className="flex-1 items-center justify-end p-8 dark:bg-black">
+      <Stack.Screen options={{ headerShown: false }} />
       <Pressable
         className="w-full flex justify-center items-center bg-gray-800 rounded-lg px-5 py-3.5 mb-3 dark:bg-white"
         onPress={() => router.push("/auth/setup")}
