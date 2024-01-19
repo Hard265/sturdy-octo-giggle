@@ -60,7 +60,7 @@ export default function Page() {
         keyExtractor={(item) => item.address}
       />
       <Pressable
-        onPress={() => router.push("/chat/start")}
+        onPress={() => router.push("/chat/scan")}
         className="absolute bottom-4 right-4 z-90 bg-gray-300 p-4 rounded-xl shadow flex justify-center items-center dark:bg-grey-800"
       >
         <Feather
