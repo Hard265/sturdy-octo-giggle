@@ -1,7 +1,7 @@
 import { Stack, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { FlatList, Pressable, Text, TextInput, View } from "react-native";
-import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import { Feather, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { useColorScheme } from "nativewind";
 import React from "react";
 
@@ -9,6 +9,7 @@ type messageProps = {
   id: string;
   sender: string | string[];
   message: string;
+  timestamp: string;
 };
 
 type messageRendererProps = {
@@ -17,6 +18,7 @@ type messageRendererProps = {
 
 export default function Page() {
   const { address } = useLocalSearchParams();
+  const { colorScheme, setColorScheme } = useColorScheme();
   const [composor, setComposor] = React.useState("");
 
   const messages: messageProps[] = [
@@ -24,11 +26,13 @@ export default function Page() {
       id: "hajs",
       sender: "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2",
       message: "Hey",
+      timestamp: "2023-03-27T10:00:00.000Z",
     },
     {
       id: "hajxs",
       sender: "1BvBMSEYstWetqTFn5Au4m4GFg7xJJKVN2",
       message: "How are you doing?",
+      timestamp: "2023-03-27T10:01:00.000Z",
     },
   ];
 
@@ -43,16 +47,15 @@ export default function Page() {
         <Text className="text-sm font-normal pt-2.5 pb-1.5 text-gray-900 dark:text-white">
           {item.message}
         </Text>
-        <View className="inline-flex flex-row gap-x-2">
-          <Text className="text-xs font-normal text-gray-500 dark:text-gray-400">
-            11:45
-          </Text>
+        {/* <View className="inline-flex flex-row gap-x-2">
           {item.sender == address && (
-            <Text className="text-xs font-normal text-gray-500 dark:text-gray-400">
-              Delivered
-            </Text>
+            <Feather
+              name="check"
+              size={12}
+              color={colorScheme == "dark" ? "#9CA3AF" : "#6B7280"}
+            />
           )}
-        </View>
+        </View> */}
       </View>
     );
   };
@@ -62,38 +65,20 @@ export default function Page() {
       id: Date.now().toString(),
       sender: address,
       message: composor,
+      timestamp: new Date().toISOString(),
     });
     setComposor("");
   };
 
   return (
     <View className="flex flex-col flex-1 items-center dark:bg-black">
-      <Stack.Screen
-        options={{
-          title: address.toString(),
-          headerRight: (props) => (
-            <MaterialIcons
-              {...props}
-              name="info"
-              size={24}
-            />
-          ),
-          headerTintColor:
-            useColorScheme().colorScheme == "dark" ? "white" : "black",
-          headerStyle: {
-            backgroundColor:
-              useColorScheme().colorScheme == "dark" ? "black" : "white",
-          },
-        }}
-      />
       <FlatList
-        className="flex flex-1 w-full border-t border-gray-300 dark:border-gray-800"
+        className="flex flex-1 w-full"
         data={messages}
         renderItem={messageRenderer}
         keyExtractor={(item) => item.id}
       />
-      <View className="flex-1"></View>
-      <View className="flex flex-row gap-x-3 items-center mt-auto px-2.5 py-1.5 w-full border-t border-gray-300 shadow  dark:border-gray-900">
+      <View className="flex flex-row gap-x-3 items-center mt-auto px-2.5 py-1.5 w-full">
         <TextInput
           value={composor}
           onChangeText={setComposor}
@@ -105,7 +90,6 @@ export default function Page() {
         <Pressable
           className="self-end p-2"
           onPress={() => submitMessage()}
-          disabled={composor.trim() != ""}
         >
           <MaterialIcons
             name="arrow-upward"

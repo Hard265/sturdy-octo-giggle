@@ -1,6 +1,9 @@
 import { Stack, router } from "expo-router";
 import { useColorScheme } from "nativewind";
 import { Pressable, View, Text, FlatList } from "react-native";
+import Header from "../../components/Header";
+import { Image } from "expo-image";
+import { Feather } from "@expo/vector-icons";
 
 type userProps = {
   address: string;
@@ -13,40 +16,59 @@ type userRendererProps = {
 const users: userProps[] = [
   {
     address: "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2",
-  },
-];
+  },{
+    address: "XQvBMSEYsioetqTFn5Au4m4GFg7xJaNVN2",
+  },{
+    address: "POYBMSEYstWetqTFn5Au4m4GFg7xJaNVN2",
+  }
+]
 
 export default function Page() {
+  const { colorScheme, setColorScheme } = useColorScheme();
+
   const userRenderer = ({ item }: userRendererProps) => {
     return (
       <Pressable
-        className="p-2"
-        onPress={() => router.push("/chat/1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2")}
+        className="flex flex-row justify-between px-4 py-2"
+        onPress={() => router.push(`/chat/${item.address}/`)}
       >
-        <Text className="text-base font-semibold text-gray-900 dark:text-white">{item.address}</Text>
+        <View className="min-w-0 flex-auto">
+          <Text className="text-sm font-semibold truncate leading-6 text-gray-900 dark:text-gray-100">
+            {item.address}
+          </Text>
+          <Text className="mt-1 truncate text-xs leading-5 text-gray-500">
+            Libero non non earum et corporis pariatur.
+          </Text>
+        </View>
+        <View className="sm:flex sm:flex-col sm:items-end">
+          <Text className="text-sm leading-5 text-gray-500">1d</Text>
+        </View>
       </Pressable>
     );
   };
 
   return (
-    <View className="flex-1 items-center justify-center dark:bg-black">
-     <Stack.Screen
-        options={{
-          title:"Chats",
-          headerTitleAlign: "left",
-          headerTintColor: useColorScheme().colorScheme == "dark" ? "white" : "black",
-          headerStyle: {
-            backgroundColor:
-              useColorScheme().colorScheme == "dark" ? "black" : "white",
-          },
-        }}
-      />
+    <View className="relative flex-1 dark:bg-black">
+      <Header />
+      <Text className="text-sm pl-4 font-semibold leading-6 text-gray-900 dark:text-gray-100">
+        Recent chats
+      </Text>
       <FlatList
-        className="flex flex-1 w-full border-t border-gray-300 dark:border-gray-800"
+        className="flex flex-1 py-2 w-full"
         data={users}
         renderItem={userRenderer}
         keyExtractor={(item) => item.address}
       />
+      <Pressable
+        onPress={() => router.push("/chat/start")}
+        className="absolute bottom-4 right-4 z-90 bg-gray-300 p-4 rounded-xl shadow flex justify-center items-center dark:bg-grey-800"
+      >
+        <Feather
+          name="edit-3"
+          size={24}
+          color={colorScheme === "light" ? "#D4D4D8" : "#1F2937"}
+        />
+      </Pressable>
     </View>
   );
 }
