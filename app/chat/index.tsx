@@ -64,7 +64,7 @@ export default function Page() {
         className="absolute bottom-4 right-4 z-90 bg-gray-300 p-4 rounded-xl shadow flex justify-center items-center dark:bg-grey-800"
       >
         <Feather
-          name="edit-3"
+          name="maximize"
           size={24}
           color={colorScheme === "light" ? "#D4D4D8" : "#1F2937"}
         />
