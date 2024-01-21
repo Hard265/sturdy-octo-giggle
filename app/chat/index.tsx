@@ -1,32 +1,24 @@
 import { Stack, router } from "expo-router";
+import { useState } from "react";
 import { useColorScheme } from "nativewind";
 import { Pressable, View, Text, FlatList } from "react-native";
 import Header from "../../components/Header";
 import { Image } from "expo-image";
 import { Feather } from "@expo/vector-icons";
 
-type userProps = {
+type ItemProps = {
   address: string;
 };
 
-type userRendererProps = {
-  item: userProps;
+type ItemRendererProps = {
+  item: ItemProps;
 };
-
-const users: userProps[] = [
-  {
-    address: "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2",
-  },{
-    address: "XQvBMSEYsioetqTFn5Au4m4GFg7xJaNVN2",
-  },{
-    address: "POYBMSEYstWetqTFn5Au4m4GFg7xJaNVN2",
-  }
-]
 
 export default function Page() {
   const { colorScheme, setColorScheme } = useColorScheme();
+  const [chats, setChats] = useState<ItemProps[]>([]);
 
-  const userRenderer = ({ item }: userRendererProps) => {
+  const chatRenderer = ({ item }: ItemRendererProps) => {
     return (
       <Pressable
         className="flex flex-row justify-between px-4 py-2"
@@ -55,8 +47,8 @@ export default function Page() {
       </Text>
       <FlatList
         className="flex flex-1 py-2 w-full"
-        data={users}
-        renderItem={userRenderer}
+        data={chats}
+        renderItem={chatRenderer}
         keyExtractor={(item) => item.address}
       />
       <Pressable
