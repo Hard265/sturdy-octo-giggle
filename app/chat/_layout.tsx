@@ -15,6 +15,13 @@ export default function Layout() {
         headerTintColor: colorScheme == "dark" ? "#fff" : "#000",
       }}
     >
+      <Stack.Screen name="index" options={{
+        title: "", headerRight(props) {
+          return <Pressable>
+            <Feather name="user" size={24} color={props.tintColor} />
+          </Pressable>
+        },
+      }} />
       <Stack.Screen
         name="[address]"
         options={{ headerShown: false }}

@@ -1,64 +1,53 @@
-import { Stack, router } from "expo-router";
-import { useState } from "react";
-import { useColorScheme } from "nativewind";
-import { Pressable, View, Text, FlatList } from "react-native";
-import Header from "../../components/Header";
-import { Image } from "expo-image";
+import { FlatList, Pressable, Text, View } from "react-native";
+import chatStore, { Message } from "../../store/chatStore";
+import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
+import { router } from "expo-router";
 
-type ItemProps = {
-  address: string;
-};
-
-type ItemRendererProps = {
-  item: ItemProps;
+type itemProps = {
+  item: Message;
 };
 
 export default function Page() {
-  const { colorScheme, setColorScheme } = useColorScheme();
-  const [chats, setChats] = useState<ItemProps[]>([]);
+  const unique = _.uniqBy(chatStore.messages, "sender");
 
-  const chatRenderer = ({ item }: ItemRendererProps) => {
+  const Item = ({ item }: itemProps) => {
     return (
       <Pressable
-        className="flex flex-row justify-between px-4 py-2"
-        onPress={() => router.push(`/chat/${item.address}/`)}
+        className="flexjustify-between gap-x-6 py-2 px-4"
+        onPress={() => router.push(`/chat/${item.sender}/`)}
       >
         <View className="min-w-0 flex-auto">
-          <Text className="text-sm font-semibold truncate leading-6 text-gray-900 dark:text-gray-100">
-            {item.address}
+          <Text className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-300">
+            {item.sender}
           </Text>
-          <Text className="mt-1 truncate text-xs leading-5 text-gray-500">
-            Libero non non earum et corporis pariatur.
+          <Text className="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-gray-600">
+            {item.content}
           </Text>
-        </View>
-        <View className="sm:flex sm:flex-col sm:items-end">
-          <Text className="text-sm leading-5 text-gray-500">1d</Text>
         </View>
       </Pressable>
     );
   };
 
   return (
-    <View className="relative flex-1 dark:bg-black">
-      <Header />
-      <Text className="text-sm pl-4 font-semibold leading-6 text-gray-900 dark:text-gray-100">
+    <View className="flex-1 flex relative dark:bg-black">
+      <Text className="text-sm font-semibold px-4 leading-6 text-gray-900 dark:text-gray-300">
         Recent chats
       </Text>
-      <FlatList
-        className="flex flex-1 py-2 w-full"
-        data={chats}
-        renderItem={chatRenderer}
-        keyExtractor={(item) => item.address}
-      />
-      <Pressable
-        onPress={() => router.push("/chat/scan")}
-        className="absolute bottom-4 right-4 z-90 bg-gray-300 p-4 rounded-xl shadow flex justify-center items-center dark:bg-grey-800"
-      >
+      {_.isEmpty(unique) ? (
+        <Text>No recent chats</Text>
+      ) : (
+        <FlatList
+          className="flex-1"
+          data={unique}
+          renderItem={Item}
+          keyExtractor={(item) => item.sender}
+        />
+      )}
+      <Pressable className="absolute bottom-[16px] right-[16px] z-9 p-4 dark:bg-gray-300 rounded-xl">
         <Feather
           name="maximize"
           size={24}
-          color={colorScheme === "light" ? "#D4D4D8" : "#1F2937"}
         />
       </Pressable>
     </View>
