@@ -1,4 +1,4 @@
-import { Feather } from "@expo/vector-icons";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Stack, router } from "expo-router";
 import { useColorScheme } from "nativewind";
 import { Pressable, View } from "react-native";
@@ -15,19 +15,49 @@ export default function Layout() {
         headerTintColor: colorScheme == "dark" ? "#fff" : "#000",
       }}
     >
-      <Stack.Screen name="index" options={{
-        title: "", headerRight(props) {
-          return <Pressable>
-            <Feather name="user" size={24} color={props.tintColor} />
-          </Pressable>
-        },
-      }} />
+      <Stack.Screen
+        name="index"
+        options={{
+          title: "",
+          headerRight(props) {
+            return (
+              <View className="flex flex-row gap-x-4">
+                <Pressable>
+                  <MaterialCommunityIcons
+                    name="qrcode"
+                    size={24}
+                    color={props.tintColor}
+                  />
+                </Pressable>
+                <Pressable>
+                  <Feather
+                    name="search"
+                    size={24}
+                    color={props.tintColor}
+                  />
+                </Pressable>
+                <Pressable>
+                  <Feather
+                    name="user"
+                    size={24}
+                    color={props.tintColor}
+                  />
+                </Pressable>
+              </View>
+            );
+          },
+        }}
+      />
       <Stack.Screen
         name="[address]"
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="scan"
+        name="(modals)/scan"
+        options={{ title: "Scan QR code", presentation: "fullScreenModal" }}
+      />
+      <Stack.Screen
+        name="(modals)/qrcode"
         options={{ title: "Scan QR code", presentation: "fullScreenModal" }}
       />
     </Stack>
