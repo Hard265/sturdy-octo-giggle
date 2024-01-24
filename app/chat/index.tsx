@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import { Message } from "../../util/types";
 import { observer } from "mobx-react";
+import constant from "../../constants/Strings";
 
 type itemProps = {
   item: Message;
@@ -16,7 +17,11 @@ type itemProps = {
 const socketEndpoint = "http://localhost:3000";
 
 const Page = observer(() => {
-  const unique = _.uniqBy(_.reverse([...chatStore.messages]), "sender");
+  const unique = _.uniqBy(_.reverse([...chatStore.messages]), (message) => {
+    return message.beneficiary == constant.address
+      ? message.sender
+      : message.beneficiary;
+  });
   const [hasConnection, setConnection] = useState(false);
 
   useEffect(function didMount() {
@@ -36,7 +41,10 @@ const Page = observer(() => {
   const Item = ({ item }: itemProps) => {
     return (
       <ChatListItem
-        message={item}
+        title={item.beneficiary == constant.address
+          ? item.sender
+          : item.beneficiary}
+        subtitle={item.content}
         hasUnread
       />
     );
@@ -62,7 +70,7 @@ const Page = observer(() => {
           className="flex-1"
           data={unique}
           renderItem={Item}
-          keyExtractor={(item) => item.sender}
+          keyExtractor={(item) => item.id }
         />
       )}
       <Pressable

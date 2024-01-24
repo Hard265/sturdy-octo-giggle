@@ -16,14 +16,15 @@ class ChatStore {
             deleteMessages: action,
             deleteAll: action
         })
-        
-        this.database = openDatabase("chats.db", undefined, undefined, undefined, (db) => {
+
+        this.database = openDatabase("messages.db", undefined, undefined, undefined, (db) => {
             db.transaction((tx) => {
                 tx.executeSql(`CREATE TABLE IF NOT EXISTS messages (
                     id TEXT PRIMARY KEY,
                     content TEXT,
                     sender TEXT,
-                    timestamp TEXT
+                    timestamp TEXT,
+                    beneficiary Text
                   )`
                 )
             })
@@ -35,11 +36,11 @@ class ChatStore {
         this.messages.push(message)
         this.database.transaction(transaction => {
             transaction.executeSql(
-                'INSERT INTO messages (id, content, sender, timestamp) VALUES (?, ?, ?, ?)',
-                [message.id, message.content, message.sender, message.timestamp],
+                'INSERT INTO messages (id, content, sender, timestamp, beneficiary) VALUES (?, ?, ?, ?, ?)',
+                [message.id, message.content, message.sender, message.timestamp, message.beneficiary],
                 () => { console.log("message pushed") },
-                (e,i) => {
-                    console.log("error",i.message);
+                (e, i) => {
+                    console.log("error", i.message);
                     return false
                 }
             )
@@ -51,9 +52,9 @@ class ChatStore {
     }
 
     async deleteAll() {
-        // await this.database.transactionAsync(async transaction => {
-        //     await transaction.executeSqlAsync('DELETE FROM messages', []);
-        // })
+        await this.database.transactionAsync(async transaction => {
+            await transaction.executeSqlAsync('DELETE FROM messages', []);
+        })
     }
 
     async loadMessagesFromDatabase() {

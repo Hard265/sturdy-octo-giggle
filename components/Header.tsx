@@ -13,7 +13,6 @@ export default function Header() {
           <View className="flex-row space-x-2">
             <Pressable
               className="p-2.5"
-              onPress={() => router.push("/chat/settings")}
             >
               <Feather
                 name="search"
@@ -23,7 +22,6 @@ export default function Header() {
             </Pressable>
             <Pressable
               className="p-2.5"
-              onPress={() => router.push("/chat/settings")}
             >
               <Feather
                 name="user"

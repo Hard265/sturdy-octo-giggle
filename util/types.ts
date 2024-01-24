@@ -2,6 +2,7 @@ interface Message {
     id: string;
     content: string;
     sender: string;
+    beneficiary: string;
     timestamp: string;
 }
 

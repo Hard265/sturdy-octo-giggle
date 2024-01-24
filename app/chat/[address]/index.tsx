@@ -10,6 +10,7 @@ import ChatBubble from "../../../components/ChatBubble";
 import chatStore from "../../../store/chatStore";
 import { organizeMessages } from "../../../util/fn";
 import { Message, MessageSection } from "../../../util/types";
+import constant from "../../../constants/Strings";
 
 type ItemProps = {
   item: Message;
@@ -24,21 +25,28 @@ const Page = observer(() => {
   const { colorScheme } = useColorScheme();
 
   const organizedSections: MessageSection[] = organizeMessages(
-    _.filter(chatStore.messages, ["sender", address])
+    _.filter(chatStore.messages, (message) => {
+      return (
+        (message.sender === address &&
+          message.beneficiary == constant.address) ||
+        (message.sender === constant.address && message.beneficiary == address)
+      );
+    })
   );
 
   const handleSendMessage = () => {
     chatStore.pushMessage({
       id: Crypto.randomUUID(),
-      sender: address.toString(),
+      sender: constant.address,
       content: newMessage,
       timestamp: new Date().toISOString(),
+      beneficiary: address.toString(),
     });
     setNewMessage("");
   };
 
   const Item = ({ item }: ItemProps) => {
-    const alignment = _.isEqual(item.sender, address) ? "right" : "left";
+    const alignment = _.isEqual(item.sender, constant.address) ? "right" : "left";
 
     return (
       <ChatBubble
@@ -74,7 +82,7 @@ const Page = observer(() => {
       />
       {_.isEmpty(organizedSections) ? (
         <View className="flex items-center flex-1 w-full">
-         <Text className="text-sm mt-4 font-light text-gray-500 dark:text-gray-600">
+          <Text className="text-sm mt-4 font-light text-gray-500 dark:text-gray-600">
             your messages will appeare here
           </Text>
         </View>

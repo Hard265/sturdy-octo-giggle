@@ -62,7 +62,7 @@ export default function Page() {
         />
         <Pressable
           className="w-full mt-4 justify-self-end flex justify-center items-center bg-gray-800 rounded-lg px-5 py-3 dark:bg-white"
-          onPress={() => router.push(`/chat/${address}/`)}
+          onPress={() => router.replace(`/chat/${address}/`)}
         >
           <Text className="text-white dark:text-gray-800 font-medium text-sm uppercase">
             confirm

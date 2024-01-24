@@ -2,6 +2,7 @@ import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Stack, router } from "expo-router";
 import { useColorScheme } from "nativewind";
 import { Pressable, View } from "react-native";
+import chatStore from "../../store/chatStore";
 
 export default function Layout() {
   const { colorScheme, setColorScheme } = useColorScheme();
@@ -22,7 +23,7 @@ export default function Layout() {
           headerRight(props) {
             return (
               <View className="flex flex-row gap-x-4">
-                <Pressable>
+                <Pressable onPress={()=>router.push("/chat/qrcode")}>
                   <MaterialCommunityIcons
                     name="qrcode"
                     size={24}
