@@ -3,9 +3,11 @@ import { router } from "expo-router";
 import _ from "lodash";
 import { FlatList, Pressable, Text, View } from "react-native";
 import ChatListItem from "../../components/ChatListItem";
-import chatStore, { Message } from "../../store/chatStore";
+import chatStore from "../../store/chatStore";
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
+import { Message } from "../../util/types";
+import { observer } from "mobx-react";
 
 type itemProps = {
   item: Message;
@@ -13,7 +15,7 @@ type itemProps = {
 
 const socketEndpoint = "http://localhost:3000";
 
-export default function Page() {
+const Page = observer(() => {
   const unique = _.uniqBy(_.reverse([...chatStore.messages]), "sender");
   const [hasConnection, setConnection] = useState(false);
 
@@ -74,4 +76,6 @@ export default function Page() {
       </Pressable>
     </View>
   );
-}
+});
+
+export default Page;

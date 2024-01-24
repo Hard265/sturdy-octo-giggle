@@ -50,3 +50,4 @@ async function deriveChecksumBits(entropyBuffer: Uint8Array): Promise<string> {
 function hexToBinary(hex: string): string {
   return BigInt("0x" + hex).toString(2);
 }
+

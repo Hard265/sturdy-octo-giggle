@@ -1,12 +1,9 @@
 import { action, makeObservable, observable, transaction } from "mobx";
 import _ from "lodash"
-import { SQLiteDatabase, openDatabase } from "expo-sqlite";
+import { SQLiteDatabase, openDatabase, } from "expo-sqlite";
+import { Message } from "../util/types";
+import * as crypto from "expo-crypto";
 
-type Message = {
-    id: string;
-    content: string;
-    sender: string;
-}
 
 class ChatStore {
     messages: Message[] = [];
@@ -16,15 +13,17 @@ class ChatStore {
         makeObservable(this, {
             messages: observable,
             pushMessage: action,
-            deleteMessages: action
+            deleteMessages: action,
+            deleteAll: action
         })
-
-        this.database = openDatabase("ChatDatabase.db", undefined, undefined, undefined, (db) => {
+        
+        this.database = openDatabase("chats.db", undefined, undefined, undefined, (db) => {
             db.transaction((tx) => {
                 tx.executeSql(`CREATE TABLE IF NOT EXISTS messages (
                     id TEXT PRIMARY KEY,
                     content TEXT,
-                    sender TEXT
+                    sender TEXT,
+                    timestamp TEXT
                   )`
                 )
             })
@@ -36,14 +35,25 @@ class ChatStore {
         this.messages.push(message)
         this.database.transaction(transaction => {
             transaction.executeSql(
-                'INSERT INTO messages (id, content, sender) VALUES (?, ?, ?)',
-                [message.id, message.content, message.sender]
+                'INSERT INTO messages (id, content, sender, timestamp) VALUES (?, ?, ?, ?)',
+                [message.id, message.content, message.sender, message.timestamp],
+                () => { console.log("message pushed") },
+                (e,i) => {
+                    console.log("error",i.message);
+                    return false
+                }
             )
         })
     }
 
     deleteMessages(messagesId: string[]) {
         this.messages.filter((value) => (_.includes(messagesId, value.id)))
+    }
+
+    async deleteAll() {
+        // await this.database.transactionAsync(async transaction => {
+        //     await transaction.executeSqlAsync('DELETE FROM messages', []);
+        // })
     }
 
     async loadMessagesFromDatabase() {
@@ -56,4 +66,4 @@ class ChatStore {
 
 
 const chatStore = new ChatStore();
-export { chatStore as default, Message };
+export { chatStore as default };

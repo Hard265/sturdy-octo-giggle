@@ -1,29 +1,38 @@
-import React from "react";
-import _ from "lodash";
-import * as Crypto from "expo-crypto";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
+import * as Crypto from "expo-crypto";
 import { Stack, useLocalSearchParams } from "expo-router";
-import { FlatList, Pressable, Text, TextInput, View } from "react-native";
-import chatStore, { Message } from "../../../store/chatStore";
-import ChatBubble from "../../../components/ChatBubble";
+import _ from "lodash";
+import { observer } from "mobx-react";
 import { useColorScheme } from "nativewind";
+import React from "react";
+import { Pressable, SectionList, Text, TextInput, View } from "react-native";
+import ChatBubble from "../../../components/ChatBubble";
+import chatStore from "../../../store/chatStore";
+import { organizeMessages } from "../../../util/fn";
+import { Message, MessageSection } from "../../../util/types";
 
 type ItemProps = {
   item: Message;
 };
+type SectionHeaderProps = {
+  section: { title: string };
+};
 
-export default function Page() {
+const Page = observer(() => {
   const { address } = useLocalSearchParams();
   const [newMessage, setNewMessage] = React.useState("");
-  const {colorScheme} = useColorScheme()
+  const { colorScheme } = useColorScheme();
 
-  const messages = _.filter(chatStore.messages, ["sender", address]);
+  const organizedSections: MessageSection[] = organizeMessages(
+    _.filter(chatStore.messages, ["sender", address])
+  );
 
   const handleSendMessage = () => {
     chatStore.pushMessage({
       id: Crypto.randomUUID(),
       sender: address.toString(),
       content: newMessage,
+      timestamp: new Date().toISOString(),
     });
     setNewMessage("");
   };
@@ -39,8 +48,12 @@ export default function Page() {
     );
   };
 
-  const TimelineTag = ({ item }: ItemProps) => {
-    return <View />;
+  const TimelineTag = ({ section }: SectionHeaderProps) => {
+    return (
+      <Text className="text-center text-sm text-500 dark:text-gray-600 capitalize my-2">
+        {section.title}
+      </Text>
+    );
   };
 
   return (
@@ -49,7 +62,7 @@ export default function Page() {
         options={{
           title: address.toString(),
           headerRight: (props) => (
-            <Pressable>
+            <Pressable onPress={() => chatStore.deleteAll()}>
               <Feather
                 name="user"
                 size={24}
@@ -59,19 +72,19 @@ export default function Page() {
           ),
         }}
       />
-      {_.isEmpty(messages) ? (
-        <View className="flex flex-col flex-1 w-full">
-          <Text className="text-gray-800 dark:text-gray-300">
-            No recent messages
+      {_.isEmpty(organizedSections) ? (
+        <View className="flex items-center flex-1 w-full">
+         <Text className="text-sm mt-4 font-light text-gray-500 dark:text-gray-600">
+            your messages will appeare here
           </Text>
         </View>
       ) : (
-        <FlatList
-          className="flex flex-1 w-full"
-          data={messages}
-          renderItem={Item}
+        <SectionList
+          className="flex-1 flex w-full"
+          sections={organizedSections}
           keyExtractor={(item) => item.id}
-          ItemSeparatorComponent={TimelineTag}
+          renderItem={Item}
+          renderSectionHeader={TimelineTag}
         />
       )}
       <View className="flex flex-row gap-x-3 justify-center items-center mt-auto px-2.5 py-1.5 w-full">
@@ -81,7 +94,7 @@ export default function Page() {
           multiline
           placeholder="Aa.."
           placeholderTextColor={"gray"}
-          cursorColor={colorScheme == "light" ?  "#1F2937" : "#D1D5DB"}
+          cursorColor={colorScheme == "light" ? "#1F2937" : "#D1D5DB"}
           className="flex-1 p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-gray-500 dark:bg-gray-900 dark:border-gray-800 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-600"
         />
         <Pressable
@@ -92,10 +105,12 @@ export default function Page() {
           <MaterialIcons
             name="arrow-upward"
             size={24}
-            color={colorScheme == "dark" ?  "#1F2937" : "#D1D5DB"}
+            color={colorScheme == "dark" ? "#1F2937" : "#D1D5DB"}
           />
         </Pressable>
       </View>
     </View>
   );
-}
+});
+
+export default Page;
