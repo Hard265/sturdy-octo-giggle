@@ -5,6 +5,7 @@ import { Pressable } from "react-native";
 
 export default function Layout() {
   const { colorScheme, setColorScheme } = useColorScheme();
+  const { address } = useLocalSearchParams();
 
   return (
     <Stack
@@ -16,8 +17,8 @@ export default function Layout() {
       }}
     >
       <Stack.Screen
-        options={{ presentation: "modal" }}
-        name="details"
+        options={{title: address.toString(), presentation: "modal" }}
+        name="profile"
       />
     </Stack>
   );

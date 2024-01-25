@@ -1,6 +1,6 @@
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import * as Crypto from "expo-crypto";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Stack, router, useLocalSearchParams } from "expo-router";
 import _ from "lodash";
 import { observer } from "mobx-react";
 import { useColorScheme } from "nativewind";
@@ -46,7 +46,9 @@ const Page = observer(() => {
   };
 
   const Item = ({ item }: ItemProps) => {
-    const alignment = _.isEqual(item.sender, constant.address) ? "right" : "left";
+    const alignment = _.isEqual(item.sender, constant.address)
+      ? "right"
+      : "left";
 
     return (
       <ChatBubble
@@ -70,7 +72,7 @@ const Page = observer(() => {
         options={{
           title: address.toString(),
           headerRight: (props) => (
-            <Pressable onPress={() => chatStore.deleteAll()}>
+            <Pressable onPress={() => router.push(`/chat/${address}/profile`)}>
               <Feather
                 name="user"
                 size={24}

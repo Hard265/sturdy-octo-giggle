@@ -14,14 +14,14 @@ export default function ChatListItem({
 }: ChatListItemProps) {
   return (
     <Pressable
-      className="flexjustify-between gap-x-6 py-0.5 px-4"
+      className="flexjustify-between gap-x-6 py-1 px-4"
       onPress={() => router.push(`/chat/${title}/`)}
     >
       <View className="min-w-0 flex-auto">
-        <Text className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-300">
+        <Text className=" font-semibold leading-6 text-gray-900 dark:text-gray-300">
           {title}
         </Text>
-        <Text className="truncate text-xs leading-5 text-gray-500 dark:text-gray-600">
+        <Text className="truncate text-sm leading-5 text-gray-500 dark:text-gray-600">
           {subtitle}
         </Text>
       </View>

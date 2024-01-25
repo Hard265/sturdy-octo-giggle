@@ -54,10 +54,6 @@ export default function Layout() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="(modals)/scan"
-        options={{ title: "Scan QR code", presentation: "fullScreenModal" }}
-      />
-      <Stack.Screen
         name="(modals)/qrcode"
         options={{ title: "Scan QR code", presentation: "fullScreenModal" }}
       />
