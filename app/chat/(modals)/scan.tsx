@@ -46,7 +46,10 @@ export default function Page() {
   return (
     <View className="relative flex-1 flex-col flex justify-center dark:bg-black">
       <Stack.Screen options={{ title: "Scan QR code" }} />
-
+      {/* Instruction */}
+      <Text className="text-gray-800 dark:text-white text-center mt-2">
+        Please position the QR code within the square to scan.
+      </Text>
       <BarCodeScanner
         barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
         className="insert-0 flex-1 rounded-full"
