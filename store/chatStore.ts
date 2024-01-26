@@ -3,6 +3,7 @@ import _ from "lodash"
 import { SQLiteDatabase, openDatabase, } from "expo-sqlite";
 import { Message } from "../util/types";
 import * as crypto from "expo-crypto";
+import databaseAdapter from "./databaseAdapter";
 
 
 class ChatStore {
@@ -17,18 +18,7 @@ class ChatStore {
             deleteAll: action
         })
 
-        this.database = openDatabase("messages.db", undefined, undefined, undefined, (db) => {
-            db.transaction((tx) => {
-                tx.executeSql(`CREATE TABLE IF NOT EXISTS messages (
-                    id TEXT PRIMARY KEY,
-                    content TEXT,
-                    sender TEXT,
-                    timestamp TEXT,
-                    beneficiary Text
-                  )`
-                )
-            })
-        });
+        this.database = databaseAdapter.database;
         this.loadMessagesFromDatabase();
     }
 
