@@ -3,7 +3,7 @@ import _ from "lodash"
 import { SQLiteDatabase, openDatabase, } from "expo-sqlite";
 import { Message } from "../util/types";
 import * as crypto from "expo-crypto";
-import databaseAdapter from "./databaseAdapter";
+import databaseStore from "./databaseStore";
 
 
 class ChatStore {
@@ -17,8 +17,7 @@ class ChatStore {
             deleteMessages: action,
             deleteAll: action
         })
-
-        this.database = databaseAdapter.database;
+        this.database = databaseStore.instance;
         this.loadMessagesFromDatabase();
     }
 

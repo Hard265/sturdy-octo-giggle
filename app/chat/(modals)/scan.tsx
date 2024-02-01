@@ -31,10 +31,9 @@ export default function Page() {
   //   getBarCodeScannerPermissions();
   // }, []);
 
-  // const handleBarCodeScanned = ({ type, data }: BarCodeScannerResult) => {
-  //   setScanned(true);
-  //   alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-  // };
+  const handleBarCodeScanned = ({ type, data }: BarCodeScannerResult) => {
+    
+  };
 
   // if (hasPermission === null) {
   //   return <Text>Requesting for camera permission</Text>;
@@ -44,21 +43,43 @@ export default function Page() {
   // }
 
   return (
-    <View className="relative flex-1 flex-col flex justify-center dark:bg-black">
-      <Stack.Screen options={{ title: "Scan QR code" }} />
-      {/* Instruction */}
-      <Text className="text-gray-800 dark:text-white text-center mt-2">
-        Please position the QR code within the square to scan.
-      </Text>
+    <View className="flex-1 p-4 justify-center dark:bg-black">
       <BarCodeScanner
-        barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
-        className="insert-0 flex-1 rounded-full"
+        style={StyleSheet.absoluteFillObject}
+        className="flex-1 rounded-2xl"
+        onBarCodeScanned={handleBarCodeScanned}
       />
-      <Pressable className="sm:container flex  mt-auto p-2.5 rounded-lg m-2  bg-red-50 dark:bg-gray-800 border border-red-100 dark:border-gray-700">
-        <Text className="text-sm text-center text-gray-800 dark:text-gray-300 uppercase">
-          Enter address manually
+      <View style={StyleSheet.absoluteFillObject} className="flex justify-center items-center">
+        <View className="h-56 w-56 border border-white rounded"></View>
+        {/* flex itself to bottom */}
+
+        <Pressable
+          className="mt-4 flex justify-center items-center rounded-lg px-5 py-3"
+          onPress={() => null}
+        >
+          <Text className="shadow text-blue-500 font-medium text-sm uppercase">
+            Or enter address manually
+          </Text>
+        </Pressable>
+      </View>
+      {/* <View>
+        <Text className="block mb-2 text-sm font-medium text-gray-900 dark:text-white uppercase">
+          Enter address
         </Text>
-      </Pressable>
+        <TextInput
+          value={address}
+          onChangeText={(text) => setAddress(_.trim(text))}
+          className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:border-gray-300"
+        />
+        <Pressable
+          className="w-full mt-4 justify-self-end flex justify-center items-center bg-gray-800 rounded-lg px-5 py-3 dark:bg-white"
+          onPress={() => router.replace(`/chat/${address}/`)}
+        >
+          <Text className="text-white dark:text-gray-800 font-medium text-sm uppercase">
+            confirm
+          </Text>
+        </Pressable>
+      </View> */}
     </View>
   );
 }
