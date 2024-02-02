@@ -65,7 +65,7 @@ const Page = observer(() => {
                     color={props.tintColor}
                   />
                 </Pressable>
-                <Pressable onPress={()=>router.push("/chat/profile")}>
+                <Pressable onPress={() => router.push("/chat/profile")}>
                   <Feather
                     name="user"
                     size={24}
@@ -84,18 +84,20 @@ const Page = observer(() => {
           </Text>
         </View>
       )}
-
       <Text className="text-lg font-semibold px-4 leading-6 text-gray-900 dark:text-gray-300">
         Recent chats
       </Text>
+
       {_.isEmpty(unique) ? (
-        <Text>No recent chats</Text>
+        <View className="flex-1 flex justify-center items-center">
+          <Text className="font-light px-4 leading-6 text-gray-900 dark:text-gray-300">No recent chats</Text>
+        </View>
       ) : (
         <FlatList
           className="flex-1"
           data={unique}
           renderItem={Item}
-          keyExtractor={(item) => item.id }
+          keyExtractor={(item) => item.id}
         />
       )}
       <Pressable
