@@ -22,64 +22,53 @@ export default function Page() {
 
   const [address, setAddress] = useState("");
 
-  // useEffect(() => {
-  //   const getBarCodeScannerPermissions = async () => {
-  //     const { status } = await BarCodeScanner.requestPermissionsAsync();
-  //     setHasPermission(status === PermissionStatus.GRANTED);
-  //   };
+  useEffect(() => {
+    const getBarCodeScannerPermissions = async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === PermissionStatus.GRANTED);
+    };
 
-  //   getBarCodeScannerPermissions();
-  // }, []);
+    getBarCodeScannerPermissions();
+  }, []);
 
-  const handleBarCodeScanned = ({ type, data }: BarCodeScannerResult) => {
-    
-  };
+  const handleBarCodeScanned = ({ type, data }: BarCodeScannerResult) => {};
 
-  // if (hasPermission === null) {
-  //   return <Text>Requesting for camera permission</Text>;
-  // }
-  // if (hasPermission === false) {
-  //   return <Text>No access to camera</Text>;
-  // }
 
   return (
-    <View className="flex-1 p-4 justify-center dark:bg-black">
-      <BarCodeScanner
-        style={StyleSheet.absoluteFillObject}
-        className="flex-1 rounded-2xl"
-        onBarCodeScanned={handleBarCodeScanned}
+    <View className="flex-1 p-4 justify-center items-center dark:bg-black">
+      <Stack.Screen
+        options={{
+          title: "Align the QR code to the center",
+          headerTitleStyle: { fontSize: 16 },
+        }}
       />
-      <View style={StyleSheet.absoluteFillObject} className="flex justify-center items-center">
-        <View className="h-56 w-56 border border-white rounded"></View>
-        {/* flex itself to bottom */}
+      {!hasPermission ? (
+        <>
+          <Text className="text-5xl font-black text-gray-800 dark:text-gray-200">403</Text>
+          <Text  className="mt-1.5 text-base font-light leading-7 text-gray-600 dark:text-gray-400">Camera access forbidden.</Text>
+        </>
+      ) : (
+        <>
+          <BarCodeScanner
+            style={StyleSheet.absoluteFillObject}
+            className="flex-1 rounded-2xl"
+            onBarCodeScanned={handleBarCodeScanned}
+          />
+          <View
+            style={StyleSheet.absoluteFillObject}
+            className="flex flex-col justify-center items-center"
+          >
+            <View className="h-56 w-56 border-2 border-white rounded" />
 
-        <Pressable
-          className="mt-4 flex justify-center items-center rounded-lg px-5 py-3"
-          onPress={() => null}
-        >
-          <Text className="shadow text-blue-500 font-medium text-sm uppercase">
-            Or enter address manually
-          </Text>
-        </Pressable>
-      </View>
-      {/* <View>
-        <Text className="block mb-2 text-sm font-medium text-gray-900 dark:text-white uppercase">
-          Enter address
-        </Text>
-        <TextInput
-          value={address}
-          onChangeText={(text) => setAddress(_.trim(text))}
-          className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:border-gray-300"
-        />
-        <Pressable
-          className="w-full mt-4 justify-self-end flex justify-center items-center bg-gray-800 rounded-lg px-5 py-3 dark:bg-white"
-          onPress={() => router.replace(`/chat/${address}/`)}
-        >
-          <Text className="text-white dark:text-gray-800 font-medium text-sm uppercase">
-            confirm
-          </Text>
-        </Pressable>
-      </View> */}
+            <Pressable
+              onPress={() => router.push("/chat/scan")}
+              className="absolute bottom-[16px] right-[16px] z-9 p-4 dark:bg-gray-300 rounded-xl"
+            >
+              <Feather name="edit-3" size={24} />
+            </Pressable>
+          </View>
+        </>
+      )}
     </View>
   );
 }

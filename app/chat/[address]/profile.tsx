@@ -1,14 +1,21 @@
 import { Feather } from "@expo/vector-icons";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useColorScheme } from "nativewind";
-import { PlatformColor, Pressable, Switch, Text, TextInput, View } from "react-native";
+import {
+  PlatformColor,
+  Pressable,
+  Switch,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import Colors from "../../../constants/Colors";
 import { useState } from "react";
 
 export default function Modal() {
   const { address } = useLocalSearchParams();
   const { colorScheme } = useColorScheme();
-  const [archived, setArchived] = useState(false)
+  const [archived, setArchived] = useState(false);
 
   return (
     <View className="flex-1 p-2 dark:bg-black">
@@ -25,9 +32,7 @@ export default function Modal() {
           <Feather
             name="clipboard"
             size={24}
-            color={
-              colorScheme === "dark" ? Colors.dark.text : Colors.light.text
-            }
+            color={Colors[colorScheme].text}
           />
         </Pressable>
       </View>
@@ -37,31 +42,19 @@ export default function Modal() {
         <Text className="text-sm text-gray-800 dark:text-gray-300 uppercase">
           Archive Chat
         </Text>
-        <Switch onValueChange={setArchived} value={archived} className="h-4"/>
+        <Switch onValueChange={setArchived} value={archived} className="h-4" />
       </Pressable>
       <Pressable className="sm:container flex flex-row justify-between p-4 bg-red-50 dark:bg-gray-800 border border-red-100 dark:border-gray-700">
         <Text className="text-sm text-red-800 dark:text-red-400 uppercase">
           Block
         </Text>
-        <Feather
-          name="slash"
-          size={24}
-          color={
-            colorScheme === "dark" ? Colors.dark.error : Colors.light.error
-          }
-        />
+        <Feather name="slash" size={24} color={Colors[colorScheme].error} />
       </Pressable>
       <Pressable className="sm:container flex flex-row justify-between p-4 rounded-b-lg bg-red-50 dark:bg-gray-800 border border-t-0 border-red-100 dark:border-gray-700">
         <Text className="text-sm text-red-800 dark:text-red-400 uppercase">
           Delete Chat
         </Text>
-        <Feather
-          name="trash-2"
-          size={24}
-          color={
-            colorScheme === "dark" ? Colors.dark.error : Colors.light.error
-          }
-        />
+        <Feather name="trash-2" size={24} color={Colors[colorScheme].error} />
       </Pressable>
     </View>
   );

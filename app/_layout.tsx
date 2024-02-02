@@ -9,7 +9,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
-    'Inter-Black': require('./assets/fonts/Inter-Medium.ttf'),
+    'Inter-Medium': require('../assets/fonts/Inter/Inter-Medium.ttf'),
   });
 
   const onLayoutRootView = useCallback(async () => {

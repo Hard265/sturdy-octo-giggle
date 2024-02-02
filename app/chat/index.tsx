@@ -1,5 +1,5 @@
 import { Feather } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { Stack, router } from "expo-router";
 import _ from "lodash";
 import { FlatList, Pressable, Text, View } from "react-native";
 import ChatListItem from "../../components/ChatListItem";
@@ -52,6 +52,31 @@ const Page = observer(() => {
 
   return (
     <View className="flex-1 flex relative dark:bg-black">
+      <Stack.Screen
+        options={{
+          title: "",
+          headerRight(props) {
+            return (
+              <View className="flex flex-row gap-x-4">
+                <Pressable>
+                  <Feather
+                    name="search"
+                    size={24}
+                    color={props.tintColor}
+                  />
+                </Pressable>
+                <Pressable onPress={()=>router.push("/chat/profile")}>
+                  <Feather
+                    name="user"
+                    size={24}
+                    color={props.tintColor}
+                  />
+                </Pressable>
+              </View>
+            );
+          },
+        }}
+      />
       {hasConnection && (
         <View className="p-1 mb-4 rounded-lg bg-red-50 dark:bg-gray-800">
           <Text className="text-sm text-red-800 font-medium  dark:text-red-400">
@@ -60,7 +85,7 @@ const Page = observer(() => {
         </View>
       )}
 
-      <Text className="text-sm font-semibold px-4 leading-6 text-gray-900 dark:text-gray-300">
+      <Text className="text-lg font-semibold px-4 leading-6 text-gray-900 dark:text-gray-300">
         Recent chats
       </Text>
       {_.isEmpty(unique) ? (

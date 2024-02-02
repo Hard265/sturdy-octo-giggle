@@ -1,5 +1,4 @@
 import { ObservableMap, makeObservable, observable } from "mobx";
-import databaseAdapter from "./databaseAdapter";
 import _ from "lodash";
 
 type ConfigurationsT = {
@@ -18,10 +17,7 @@ class ConfigurationStore {
     }
 
     async loadConfiguration() {
-        await databaseAdapter.database.transactionAsync(async (tx) => {
-            const results = (await tx.executeSqlAsync("SELECT * FROM configurations")).rows as unknown as ConfigurationsT;
-            _.merge(this.configurations, results);
-        })
+        
     }
 }
 export default new ConfigurationStore();

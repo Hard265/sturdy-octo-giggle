@@ -16,39 +16,7 @@ export default function Layout() {
         headerTintColor: colorScheme == "dark" ? "#fff" : "#000",
       }}
     >
-      <Stack.Screen
-        name="index"
-        options={{
-          title: "",
-          headerRight(props) {
-            return (
-              <View className="flex flex-row gap-x-4">
-                <Pressable onPress={()=>router.push("/chat/qrcode")}>
-                  <MaterialCommunityIcons
-                    name="qrcode"
-                    size={24}
-                    color={props.tintColor}
-                  />
-                </Pressable>
-                <Pressable>
-                  <Feather
-                    name="search"
-                    size={24}
-                    color={props.tintColor}
-                  />
-                </Pressable>
-                <Pressable>
-                  <Feather
-                    name="user"
-                    size={24}
-                    color={props.tintColor}
-                  />
-                </Pressable>
-              </View>
-            );
-          },
-        }}
-      />
+      
       <Stack.Screen
         name="[address]"
         options={{ headerShown: false }}
