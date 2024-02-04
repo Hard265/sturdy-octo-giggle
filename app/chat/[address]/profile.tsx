@@ -12,6 +12,7 @@ import {
 import Colors from "../../../constants/Colors";
 import { useState } from "react";
 import { Themes } from "../../../ui/theme";
+import QRCode from "react-qr-code";
 
 export default function Modal() {
     const { address } = useLocalSearchParams();
@@ -26,10 +27,22 @@ export default function Modal() {
                 }}
             />
             <View className="flex flex-row gap-x-2">
-                <View className="w-36 h-36 mx-auto rounded dark:bg-gray-900 "></View>
+                <View className="w-36 h-36 mx-auto p-2 rounded dark:bg-gray-900 ">
+                    <QRCode
+                        bgColor="#00000000"
+                        fgColor={Themes[colorScheme].text}
+                        value={address.toString()}
+                        size={128}
+                        viewBox="0 0 128 128"
+                        style={{
+                            height: "auto",
+                            maxWidth: "100%",
+                            width: "100%",
+                        }}
+                    />
+                </View>
                 <Text className="flex-1 block wrap text-sm text-gray-900 dark:text-gray-200">
-                    {address.toString()}
-                    {" "}
+                    {address.toString()}{" "}
                     <Feather
                         name="clipboard"
                         onPress={() => console.log("copy")}
@@ -51,7 +64,6 @@ export default function Modal() {
                     />
                 </Pressable>
                 <Pressable className="w-full flex flex-row justify-between border-t border-gray-200 items-center p-3 dark:border-gray-800">
-
                     <Text className="ml-2.5 font-medium text-gray-900 dark:text-gray-300 capitalize">
                         Archive chat
                     </Text>

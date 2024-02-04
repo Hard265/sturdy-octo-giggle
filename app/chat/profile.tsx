@@ -17,6 +17,7 @@ import { BlurView } from "expo-blur";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import configStore from "../../store/configStore";
 import { Themes } from "../../ui/theme";
+import QRCode from "react-qr-code";
 
 export default function Page() {
     const { colorScheme } = useColorScheme();
@@ -25,21 +26,31 @@ export default function Page() {
     return (
         <View className="flex-1 items-center dark:bg-black p-4">
             <Stack.Screen options={{ title: "Me" }} />
-            <View className="h-40 relative w-40 rounded bg-white border border-gray-200 rounded-lg dark:bg-gray-900 dark:border-gray-800 mb-auto">
-                <Pressable className="absolute bottom-0 right-0 p-2">
+            <View className="flex flex-row gap-x-2">
+                <View className="w-36 h-36 mx-auto p-2 rounded dark:bg-gray-900 ">
+                    <QRCode
+                        bgColor="#00000000"
+                        fgColor={Themes[colorScheme].text}
+                        value={"<address>"}
+                        size={128}
+                        viewBox="0 0 128 128"
+                        style={{
+                            height: "auto",
+                            maxWidth: "100%",
+                            width: "100%",
+                        }}
+                    />
+                </View>
+                <Text className="flex-1 block wrap text-sm text-gray-900 dark:text-gray-200">
+                    {"<address>"}{" "}
                     <Feather
                         name="clipboard"
-                        size={20}
-                        color={
-                            Themes[
-                                configStore.scheme(
-                                    colorScheme
-                                )
-                            ].text
-                        }
+                        onPress={() => console.log("copy")}
+                        size={16}
+                        color={Colors[colorScheme].text}
                     />
-                </Pressable>
-            </View>
+                </Text>
+                </View>
 
             {/* theme options radio */}
             <Text
