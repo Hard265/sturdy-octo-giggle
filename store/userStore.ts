@@ -1,10 +1,10 @@
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, computed } from "mobx";
 
 import { AdminUser, User } from "../types/user";
 import databaseStore from "./databaseStore";
 
 class UserStore {
-  static #user: AdminUser | null = null;
+  #user: AdminUser | null = null;
   users: User[] = [];
 
   constructor() {
@@ -12,6 +12,7 @@ class UserStore {
       users: observable,
       pushUser: action,
       dropUser: action,
+      whoami: computed
     });
     this.loadUsersFromDatabase(); // load from database
   }
@@ -22,6 +23,10 @@ class UserStore {
         .rows as unknown as User[];
       this.users.splice(0, this.users.length, ...result);
     });
+  }
+
+  get whoami(){
+    return this.#user
   }
 
   async pushUser(user: User) {
@@ -36,17 +41,17 @@ class UserStore {
 
   async dropUser(user: User) {}
 
-  public static privateKey(): string {
-    return this.#user?.privateKey ?? "";
-  }
+  // public static privateKey(): string {
+  //   return this.#user?.privateKey ?? "";
+  // }
 
-  public static publicKey(): string {
-    return this.#user?.publicKey ?? "";
-  }
+  // public static publicKey(): string {
+  //   return this.#user?.publicKey ?? "";
+  // }
 
-  public static address(): string {
-    return this.#user?.address ?? "";
-  }
+  // public static address(): string {
+  //   return this.#user?.address ?? "";
+  // }
 }
 
 export default new UserStore();
