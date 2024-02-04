@@ -1,28 +1,36 @@
 import { Stack } from "expo-router";
-
+import { useColorScheme } from "react-native";
 
 export default function Layout() {
-    return <Stack>
-        <Stack.Screen
-        name="setup"
-        options={{
-          // Hide the header for all other routes.
-          headerShown: false,
-        }}
-      />
-        <Stack.Screen
-        name="recover"
-        options={{
-          // Hide the header for all other routes.
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="mnemonic-confirm-modal"
-        options={{
-          headerShown: false,
-          presentation: 'transparentModal',
-        }}
-      />
-    </Stack>
+    const scheme = useColorScheme();
+    return (
+        <Stack
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor:
+                        scheme == "dark"
+                            ? "#000"
+                            : "#e5e7eb",
+                },
+                headerTintColor:
+                    scheme == "dark"
+                        ? "#f3f4f6"
+                        : "#1f2937",
+            }}
+        >
+            <Stack.Screen
+                name="setup"
+                options={{
+                    title: "back",
+                }}
+            />
+            <Stack.Screen
+                name="recover"
+                options={{
+                    // Hide the header for all other routes.
+                    headerShown: false,
+                }}
+            />
+        </Stack>
+    );
 }

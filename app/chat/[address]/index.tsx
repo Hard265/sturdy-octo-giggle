@@ -83,7 +83,7 @@ const Page = observer(() => {
         }}
       />
       {_.isEmpty(organizedSections) ? (
-        <View className="flex items-center flex-1 w-full">
+        <View className="flex items-center justify-center flex-1 w-full">
           <Text className="text-sm mt-4 font-light text-gray-500 dark:text-gray-600">
             your messages will appeare here
           </Text>

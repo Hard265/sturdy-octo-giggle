@@ -8,16 +8,15 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import Colors from "../constants/Colors";
-import { Theme } from "../types/config";
 import { ReactElement, useState } from "react";
 import _ from "lodash";
 import { Stack } from "expo-router";
 import { TextInput } from "react-native-gesture-handler";
-import { Themes } from "../types/theme";
-import configStore from "../store/configStore";
 import { StatusBar } from "expo-status-bar";
 import { BlurView } from "expo-blur";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import configStore from "../../store/configStore";
+import { Themes } from "../../ui/theme";
 
 export default function Page() {
     const { colorScheme } = useColorScheme();
@@ -32,11 +31,11 @@ export default function Page() {
                         name="clipboard"
                         size={20}
                         color={
-                            Colors[
+                            Themes[
                                 configStore.scheme(
                                     colorScheme
                                 )
-                            ].tint
+                            ].text
                         }
                     />
                 </Pressable>
@@ -62,11 +61,11 @@ export default function Page() {
                         name="smartphone"
                         size={20}
                         color={
-                            Colors[
+                            Themes[
                                 configStore.scheme(
                                     colorScheme
                                 )
-                            ].tint
+                            ].text
                         }
                     />
                     <Text className="text-gray-900 dark:text-white ml-2 capitalize">
@@ -83,11 +82,11 @@ export default function Page() {
                         }
                         size={20}
                         color={
-                            Colors[
+                            Themes[
                                 configStore.scheme(
                                     colorScheme
                                 )
-                            ].tint
+                            ].text
                         }
                     />
                 </Pressable>
@@ -101,11 +100,11 @@ export default function Page() {
                         name="sun"
                         size={20}
                         color={
-                            Colors[
+                            Themes[
                                 configStore.scheme(
                                     colorScheme
                                 )
-                            ].tint
+                            ].text
                         }
                     />
                     <Text className="text-gray-900 dark:text-white ml-2 capitalize">
@@ -122,11 +121,11 @@ export default function Page() {
                         }
                         size={20}
                         color={
-                            Colors[
+                            Themes[
                                 configStore.scheme(
                                     colorScheme
                                 )
-                            ].tint
+                            ].text
                         }
                     />
                 </Pressable>
@@ -139,7 +138,7 @@ export default function Page() {
                     <Feather
                         name="moon"
                         size={20}
-                        color={Colors[colorScheme].tint}
+                        color={Themes[colorScheme].text}
                     />
                     <Text className="text-gray-900 dark:text-white ml-2 capitalize">
                         dark
@@ -154,7 +153,7 @@ export default function Page() {
                                 : "circle"
                         }
                         size={20}
-                        color={Colors[colorScheme].tint}
+                        color={Themes[colorScheme].text}
                     />
                 </Pressable>
             </View>
@@ -175,7 +174,7 @@ export default function Page() {
                     <Feather
                         name="clock"
                         size={20}
-                        color={Colors[colorScheme].tint}
+                        color={Themes[colorScheme].text}
                     />
                     <Text className="ml-2.5 font-medium text-gray-900 dark:text-gray-300 capitalize">
                         Countdown messages
@@ -186,14 +185,14 @@ export default function Page() {
                         }}
                         name="chevron-right"
                         size={20}
-                        color={Colors[colorScheme].tint}
+                        color={Themes[colorScheme].text}
                     />
                 </Pressable>
                 <Pressable className="w-full flex flex-row border-t border-gray-200 items-center p-3 dark:border-gray-800">
                     <Feather
                         name="slash"
                         size={20}
-                        color={Colors[colorScheme].tint}
+                        color={Themes[colorScheme].text}
                     />
                     <Text className="ml-2.5 font-medium text-gray-900 dark:text-gray-300 capitalize">
                         Block screenshots
@@ -204,14 +203,14 @@ export default function Page() {
                         }}
                         name="toggle-left"
                         size={20}
-                        color={Colors[colorScheme].tint}
+                        color={Themes[colorScheme].text}
                     />
                 </Pressable>
                 <Pressable className="w-full flex flex-row border-t border-gray-200 items-center p-3 dark:border-gray-800">
                     <Feather
                         name="shield"
                         size={20}
-                        color={Colors[colorScheme].tint}
+                        color={Themes[colorScheme].text}
                     />
                     <Text className="ml-2.5 font-medium text-gray-900 dark:text-gray-300 capitalize">
                         Biometric authentication
@@ -222,14 +221,14 @@ export default function Page() {
                         }}
                         name="toggle-left"
                         size={20}
-                        color={Colors[colorScheme].tint}
+                        color={Themes[colorScheme].text}
                     />
                 </Pressable>
                 <Pressable className="w-full flex flex-row border-t border-gray-200 items-center p-3 dark:border-gray-800">
                     <Feather
                         name="trash-2"
                         size={20}
-                        color={Colors[colorScheme].tint}
+                        color={Themes[colorScheme].text}
                     />
                     <Text className="ml-2.5 font-medium text-gray-900 dark:text-gray-300 capitalize">
                         Clear chats

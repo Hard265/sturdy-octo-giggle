@@ -26,7 +26,7 @@ class UserStore {
   }
 
   get whoami(){
-    return this.#user
+    return this.#user 
   }
 
   async pushUser(user: User) {

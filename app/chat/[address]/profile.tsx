@@ -2,60 +2,113 @@ import { Feather } from "@expo/vector-icons";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useColorScheme } from "nativewind";
 import {
-  PlatformColor,
-  Pressable,
-  Switch,
-  Text,
-  TextInput,
-  View,
+    PlatformColor,
+    Pressable,
+    Switch,
+    Text,
+    TextInput,
+    View,
 } from "react-native";
 import Colors from "../../../constants/Colors";
 import { useState } from "react";
+import { Themes } from "../../../ui/theme";
 
 export default function Modal() {
-  const { address } = useLocalSearchParams();
-  const { colorScheme } = useColorScheme();
-  const [archived, setArchived] = useState(false);
+    const { address } = useLocalSearchParams();
+    const { colorScheme } = useColorScheme();
+    const [archived, setArchived] = useState(false);
 
-  return (
-    <View className="flex-1 p-2 dark:bg-black">
-      <Stack screenOptions={{ title: address.toString() }} />
+    return (
+        <View className="flex-1 p-2 dark:bg-black">
+            <Stack
+                screenOptions={{
+                    title: address.toString(),
+                }}
+            />
+            <View className="flex flex-row gap-x-2">
+                <View className="w-36 h-36 mx-auto rounded dark:bg-gray-900 "></View>
+                <Text className="flex-1 block wrap text-sm text-gray-900 dark:text-gray-200">
+                    {address.toString()}
+                    {" "}
+                    <Feather
+                        name="clipboard"
+                        onPress={() => console.log("copy")}
+                        size={16}
+                        color={Colors[colorScheme].text}
+                    />
+                </Text>
+            </View>
 
-      <View className="w-36 h-36 mx-auto mt-8 mb-4 rounded dark:bg-gray-900 "></View>
-      <View className="flex flex-row">
-        <TextInput
-          value={address.toString()}
-          editable={false}
-          className="block p-2.5 flex-1 text-sm text-gray-900 bg-gray-50 rounded-l-lg border border-gray-300 dark:text-gray-300 dark:bg-gray-900 dark:border-gray-700"
-        />
-        <Pressable className="p-2.5 bg-gray-50 rounded-r-lg border border-l-0 border-gray-300 dark:bg-gray-800 dark:border-gray-700 focus:border-gray-500">
-          <Feather
-            name="clipboard"
-            size={24}
-            color={Colors[colorScheme].text}
-          />
-        </Pressable>
-      </View>
+            <View className="container mt-auto bg-white border border-gray-200 rounded-lg dark:bg-gray-900 dark:border-gray-800 ">
+                <Pressable className="w-full flex flex-row justify-between items-center p-3 dark:border-gray-800">
+                    <Text className="ml-2.5 font-medium text-gray-900 dark:text-gray-300 capitalize">
+                        Export chat
+                    </Text>
+                    <Feather
+                        name="download-cloud"
+                        size={20}
+                        color={Themes[colorScheme].text}
+                    />
+                </Pressable>
+                <Pressable className="w-full flex flex-row justify-between border-t border-gray-200 items-center p-3 dark:border-gray-800">
 
-      {/* a card button to delete chat */}
-      <Pressable className="sm:container flex flex-row mt-auto justify-between p-4 rounded-t-lg bg-red-50 dark:bg-gray-800 border border-red-100 dark:border-gray-700">
-        <Text className="text-sm text-gray-800 dark:text-gray-300 uppercase">
-          Archive Chat
-        </Text>
-        <Switch onValueChange={setArchived} value={archived} className="h-4" />
-      </Pressable>
-      <Pressable className="sm:container flex flex-row justify-between p-4 bg-red-50 dark:bg-gray-800 border border-red-100 dark:border-gray-700">
-        <Text className="text-sm text-red-800 dark:text-red-400 uppercase">
-          Block
-        </Text>
-        <Feather name="slash" size={24} color={Colors[colorScheme].error} />
-      </Pressable>
-      <Pressable className="sm:container flex flex-row justify-between p-4 rounded-b-lg bg-red-50 dark:bg-gray-800 border border-t-0 border-red-100 dark:border-gray-700">
-        <Text className="text-sm text-red-800 dark:text-red-400 uppercase">
-          Delete Chat
-        </Text>
-        <Feather name="trash-2" size={24} color={Colors[colorScheme].error} />
-      </Pressable>
-    </View>
-  );
+                    <Text className="ml-2.5 font-medium text-gray-900 dark:text-gray-300 capitalize">
+                        Archive chat
+                    </Text>
+                    <Feather
+                        name="toggle-left"
+                        size={20}
+                        color={Themes[colorScheme].text}
+                    />
+                </Pressable>
+                <Pressable className="w-full flex flex-row justify-between border-t border-gray-200 items-center p-3 dark:border-gray-800">
+                    <Text className="ml-2.5 font-medium text-gray-900 dark:text-gray-300 capitalize">
+                        Countdown messages
+                    </Text>
+                    <Feather
+                        name="chevron-right"
+                        size={20}
+                        color={Themes[colorScheme].text}
+                    />
+                </Pressable>
+                <Pressable className="w-full flex flex-row justify-between border-t border-gray-200 items-center p-3 dark:border-gray-800">
+                    <Text className="ml-2.5 font-medium text-gray-900 dark:text-gray-300 capitalize">
+                        Block
+                    </Text>
+                    <Feather
+                        name="toggle-left"
+                        size={20}
+                        color={Themes[colorScheme].text}
+                    />
+                </Pressable>
+                <Pressable className="w-full flex flex-row justify-between border-t border-gray-200 items-center p-3 dark:border-gray-800">
+                    <Text className="ml-2.5 font-medium text-gray-900 dark:text-gray-300 capitalize">
+                        Clear chat
+                    </Text>
+                    <Feather
+                        name="trash"
+                        size={20}
+                        color={Themes[colorScheme].text}
+                    />
+                </Pressable>
+            </View>
+
+            {/*button to delete chat */}
+            <Pressable className="w-full p-3 flex flex-row rounded-lg mt-2 justify-between border items-center bg-red-700 dark:bg-red-600 dark:border-reg-500">
+                <Text
+                    style={{
+                        fontFamily: "Inter-Medium",
+                    }}
+                    className="font-medium text-white"
+                >
+                    Delete chat
+                </Text>
+                <Feather
+                    name="log-out"
+                    size={20}
+                    color="white"
+                />
+            </Pressable>
+        </View>
+    );
 }

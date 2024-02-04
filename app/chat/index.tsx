@@ -1,116 +1,170 @@
 import { Feather } from "@expo/vector-icons";
 import { Stack, router } from "expo-router";
-import _ from "lodash";
-import { FlatList, Pressable, Text, View } from "react-native";
+import _, { constant } from "lodash";
+import { observer } from "mobx-react";
+import React, { useEffect, useState } from "react";
+import {
+    FlatList,
+    Pressable,
+    Text,
+    View,
+} from "react-native";
+import { TextInput } from "react-native-gesture-handler";
 import ChatListItem from "../../components/ChatListItem";
 import chatStore from "../../store/chatStore";
-import React, { useEffect, useState } from "react";
-import io from "socket.io-client";
 import { Message } from "../../util/types";
-import { observer } from "mobx-react";
-import constant from "../../constants/Strings";
+import userStore from "../../store/userStore";
 
 type itemProps = {
-  item: Message;
+    item: Message;
 };
 
-const socketEndpoint = "http://localhost:3000";
-
 const Page = observer(() => {
-  const unique = _.uniqBy(_.reverse([...chatStore.messages]), (message) => {
-    return message.beneficiary == constant.address
-      ? message.sender
-      : message.beneficiary;
-  });
-  const [hasConnection, setConnection] = useState(false);
-
-  useEffect(function didMount() {
-    const socket = io(socketEndpoint, {
-      transports: ["websocket"],
-    });
-
-    socket.io.on("open", () => setConnection(true));
-    socket.io.on("close", () => setConnection(false));
-
-    return function didUnmount() {
-      socket.disconnect();
-      socket.removeAllListeners();
-    };
-  }, []);
-
-  const Item = ({ item }: itemProps) => {
-    return (
-      <ChatListItem
-        title={item.beneficiary == constant.address
-          ? item.sender
-          : item.beneficiary}
-        subtitle={item.content}
-        hasUnread
-      />
+    const [finderShown, setFinderShown] = useState(false);
+    const unique = _.uniqBy(
+        _.reverse([...chatStore.messages]),
+        (message) => {
+            return message.beneficiary ===
+                userStore.whoami?.address
+                ? message.sender
+                : message.beneficiary;
+        }
     );
-  };
 
-  return (
-    <View className="flex-1 flex relative dark:bg-black">
-      <Stack.Screen
-        options={{
-          title: "",
-          headerRight(props) {
-            return (
-              <View className="flex flex-row gap-x-4">
-                <Pressable>
-                  <Feather
-                    name="search"
-                    size={24}
-                    color={props.tintColor}
-                  />
-                </Pressable>
-                <Pressable onPress={() => router.push("/chat/profile")}>
-                  <Feather
-                    name="user"
-                    size={24}
-                    color={props.tintColor}
-                  />
-                </Pressable>
-              </View>
-            );
-          },
-        }}
-      />
-      {hasConnection && (
-        <View className="p-1 mb-4 rounded-lg bg-red-50 dark:bg-gray-800">
-          <Text className="text-sm text-red-800 font-medium  dark:text-red-400">
-            No connection
-          </Text>
-        </View>
-      )}
-      <Text className="text-lg font-semibold px-4 leading-6 text-gray-900 dark:text-gray-300">
-        Recent chats
-      </Text>
+    const Item = ({ item }: itemProps) => {
+        return (
+            <ChatListItem
+                title={
+                    item.beneficiary ===
+                    userStore.whoami?.address
+                        ? item.sender
+                        : item.beneficiary
+                }
+                subtitle={item.content}
+                hasUnread
+            />
+        );
+    };
 
-      {_.isEmpty(unique) ? (
-        <View className="flex-1 flex justify-center items-center">
-          <Text className="font-light px-4 leading-6 text-gray-900 dark:text-gray-300">No recent chats</Text>
+    return (
+        <View className="flex-1 flex relative dark:bg-black">
+            <Stack.Screen
+                options={{
+                    headerShown: true,
+                    title: "",
+                    headerRight(props) {
+                        return (
+                            <View className="flex flex-row gap-x-4">
+                                <Pressable
+                                    onPress={() =>
+                                        setFinderShown(
+                                            !finderShown
+                                        )
+                                    }
+                                >
+                                    <Feather
+                                        name="search"
+                                        size={24}
+                                        color={
+                                            props.tintColor
+                                        }
+                                    />
+                                </Pressable>
+                                <Pressable
+                                    onPress={() =>
+                                        router.push(
+                                            "/chat/profile"
+                                        )
+                                    }
+                                >
+                                    <Feather
+                                        name="user"
+                                        size={24}
+                                        color={
+                                            props.tintColor
+                                        }
+                                    />
+                                </Pressable>
+                            </View>
+                        );
+                    },
+                }}
+            />
+            <Text className="px-4 leading-6 text-gray-900 dark:text-gray-300 ">
+                Recent chats
+            </Text>
+
+            {_.isEmpty(unique) ? (
+                <View className="flex-1 flex justify-center items-center">
+                    <Text className="font-light px-4 leading-6 text-gray-900 dark:text-gray-300">
+                        No recent chats
+                    </Text>
+                </View>
+            ) : (
+                <FlatList
+                    className="flex-1"
+                    data={unique}
+                    renderItem={Item}
+                    keyExtractor={(item) => item.id}
+                />
+            )}
+            {finderShown ? (
+                <RenderFinder
+                    onClose={() => setFinderShown(false)}
+                />
+            ) : (
+                <Pressable
+                    onPress={() =>
+                        router.push("/chat/ioguihuhilkkjih/")
+                    }
+                    className="absolute bottom-[16px] right-[16px] z-9 p-4 bg-gray-900 dark:bg-gray-300 rounded-xl"
+                >
+                    <Feather
+                        name="user-plus"
+                        size={24}
+                    />
+                </Pressable>
+            )}
         </View>
-      ) : (
-        <FlatList
-          className="flex-1"
-          data={unique}
-          renderItem={Item}
-          keyExtractor={(item) => item.id}
-        />
-      )}
-      <Pressable
-        onPress={() => router.push("/chat/scan")}
-        className="absolute bottom-[16px] right-[16px] z-9 p-4 dark:bg-gray-300 rounded-xl"
-      >
-        <Feather
-          name="maximize"
-          size={24}
-        />
-      </Pressable>
-    </View>
-  );
+    );
 });
+
+function RenderFinder({
+    onClose,
+}: {
+    onClose: () => void;
+}) {
+    return (
+        <View className="flex flex-row items-center gap-x-2 p-2">
+            <TextInput
+                className="flex-1 rounded-lg p-2 placeholder:text-white border dark:border-gray-800 dark:focus:border-gray-400 dark:bg-gray-900 "
+                placeholder="Find"
+                placeholderTextColor={"gray"}
+                returnKeyType="search"
+            />
+            <Pressable>
+                <Feather
+                    name="chevron-down"
+                    size={24}
+                    color="white"
+                />
+            </Pressable>
+            <Pressable>
+                <Feather
+                    name="chevron-up"
+                    size={24}
+                    color="white"
+                />
+            </Pressable>
+            <Pressable onPress={() => onClose()}>
+                <Feather
+                    name="x"
+                    size={24}
+                    color="white"
+                />
+            </Pressable>
+        </View>
+    );
+}
 
 export default Page;
