@@ -6,6 +6,7 @@ import {
   Button,
   Pressable,
   TextInput,
+  Modal,
 } from "react-native";
 import {
   BarCodeScanner,
@@ -33,7 +34,6 @@ export default function Page() {
 
   const handleBarCodeScanned = ({ type, data }: BarCodeScannerResult) => {};
 
-
   return (
     <View className="flex-1 p-4 justify-center items-center dark:bg-black">
       <Stack.Screen
@@ -44,8 +44,12 @@ export default function Page() {
       />
       {!hasPermission ? (
         <>
-          <Text className="text-5xl font-black text-gray-800 dark:text-gray-200">403</Text>
-          <Text  className="mt-1.5 text-base font-light leading-7 text-gray-600 dark:text-gray-400">Camera access forbidden.</Text>
+          <Text className="text-5xl font-black text-gray-800 dark:text-gray-200">
+            403
+          </Text>
+          <Text className="mt-1.5 text-base font-light leading-7 text-gray-600 dark:text-gray-400">
+            Camera access forbidden.
+          </Text>
         </>
       ) : (
         <>
@@ -70,5 +74,24 @@ export default function Page() {
         </>
       )}
     </View>
+  );
+}
+
+function enterAddressBottomsheet() {
+  return (
+    <Modal>
+      <View className="absolute rounded-xl bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-4 dark:bg-gray-900">
+        <View>
+          <Text>Enter address</Text>
+          <TextInput />
+          <Text className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            Enter the address you want to scan
+          </Text>
+        </View>
+        <Pressable>
+          <Text>Enter</Text>
+        </Pressable>
+      </View>
+    </Modal>
   );
 }
