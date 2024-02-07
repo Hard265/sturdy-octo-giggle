@@ -27,7 +27,7 @@ class ChatStore {
         this.loadMessagesFromDatabase();
     }
 
-    user_messages(user_address: string) {
+    user_messages(user_address: string) {        
         return _.filter(this.messages, (message) => {
             return (message.sender === user_address && message.beneficiary === userStore.whoami?.address) || (message.sender === userStore.whoami?.address && message.beneficiary === user_address);
         })
@@ -57,7 +57,6 @@ class ChatStore {
     }
 
     deleteMessages(messagesId: string[]) {
-        console.log(messagesId);
         
         this.database.transaction(
             (transaction) => {
@@ -68,7 +67,8 @@ class ChatStore {
                     );
                 });
             },
-            undefined,
+            ()=>console.log()
+            ,
             () => {
                 this.messages.filter((value) =>
                     _.includes(messagesId, value.id)

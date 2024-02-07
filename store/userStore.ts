@@ -4,7 +4,11 @@ import { AdminUser, User } from "../types/user";
 import databaseStore from "./databaseStore";
 
 class UserStore {
-  #user: AdminUser | null = null;
+  #user: AdminUser | null = {
+    address: "4ahdiwdioawdkklsdjiw",
+    privateKey: "",
+    publicKey: "",
+  };
   users: User[] = [];
 
   constructor() {
