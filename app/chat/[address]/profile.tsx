@@ -13,11 +13,12 @@ import Colors from "../../../constants/Colors";
 import { useState } from "react";
 import { Themes } from "../../../ui/theme";
 import QRCode from "react-qr-code";
+import Animated from "react-native-reanimated";
+import PrivancySettings from "../../../components/PrivancySettings";
 
 export default function Modal() {
     const { address } = useLocalSearchParams();
     const { colorScheme } = useColorScheme();
-    const [archived, setArchived] = useState(false);
 
     return (
         <View className="flex-1 p-2 dark:bg-black">
@@ -51,59 +52,7 @@ export default function Modal() {
                     />
                 </Text>
             </View>
-
-            <View className="container mt-auto bg-white border border-gray-200 rounded-lg dark:bg-gray-900 dark:border-gray-800 ">
-                <Pressable className="w-full flex flex-row justify-between items-center p-3 dark:border-gray-800">
-                    <Text className="ml-2.5 font-medium text-gray-900 dark:text-gray-300 capitalize">
-                        Export chat
-                    </Text>
-                    <Feather
-                        name="download-cloud"
-                        size={20}
-                        color={Themes[colorScheme].text}
-                    />
-                </Pressable>
-                <Pressable className="w-full flex flex-row justify-between border-t border-gray-200 items-center p-3 dark:border-gray-800">
-                    <Text className="ml-2.5 font-medium text-gray-900 dark:text-gray-300 capitalize">
-                        Archive chat
-                    </Text>
-                    <Feather
-                        name="toggle-left"
-                        size={20}
-                        color={Themes[colorScheme].text}
-                    />
-                </Pressable>
-                <Pressable className="w-full flex flex-row justify-between border-t border-gray-200 items-center p-3 dark:border-gray-800">
-                    <Text className="ml-2.5 font-medium text-gray-900 dark:text-gray-300 capitalize">
-                        Countdown messages
-                    </Text>
-                    <Feather
-                        name="chevron-right"
-                        size={20}
-                        color={Themes[colorScheme].text}
-                    />
-                </Pressable>
-                <Pressable className="w-full flex flex-row justify-between border-t border-gray-200 items-center p-3 dark:border-gray-800">
-                    <Text className="ml-2.5 font-medium text-gray-900 dark:text-gray-300 capitalize">
-                        Block
-                    </Text>
-                    <Feather
-                        name="toggle-left"
-                        size={20}
-                        color={Themes[colorScheme].text}
-                    />
-                </Pressable>
-                <Pressable className="w-full flex flex-row justify-between border-t border-gray-200 items-center p-3 dark:border-gray-800">
-                    <Text className="ml-2.5 font-medium text-gray-900 dark:text-gray-300 capitalize">
-                        Clear chat
-                    </Text>
-                    <Feather
-                        name="trash"
-                        size={20}
-                        color={Themes[colorScheme].text}
-                    />
-                </Pressable>
-            </View>
+            <PrivancySettings address={address.toString()}/>
 
             {/*button to delete chat */}
             <Pressable className="w-full p-3 flex flex-row rounded-lg mt-2 justify-between border items-center bg-red-700 dark:bg-red-600 dark:border-reg-500">
@@ -121,6 +70,8 @@ export default function Modal() {
                     color="white"
                 />
             </Pressable>
+
         </View>
     );
 }
+

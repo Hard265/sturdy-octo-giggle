@@ -115,9 +115,9 @@ const Page = observer(() => {
             ) : (
                 <Pressable
                     onPress={() =>
-                        router.push("/chat/ioguihuhilkkjih/")
+                        router.push("/chat/qrcodescanner")
                     }
-                    className="absolute bottom-[16px] right-[16px] z-9 p-4 bg-gray-900 dark:bg-gray-300 rounded-xl"
+                    className="absolute bottom-[16px] right-[16px] z-9 p-4 bg-gray-800 dark:bg-gray-300 rounded-xl"
                 >
                     <Feather
                         name="user-plus"

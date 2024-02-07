@@ -105,10 +105,10 @@ const Page = observer(() => {
           placeholder="Aa.."
           placeholderTextColor={"gray"}
           cursorColor={colorScheme == "light" ? "#1F2937" : "#D1D5DB"}
-          className="flex-1 p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-gray-500 dark:bg-gray-900 dark:border-gray-800 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-600"
+          className="flex-1 p-2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-gray-500 dark:bg-gray-900 dark:border-gray-800 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-600"
         />
         <Pressable
-          className="self-end p-3 rounded-lg bg-gray-800 dark:bg-gray-300 "
+          className="self-end p-2.5 rounded-lg bg-gray-800 dark:bg-gray-300 "
           onPress={() => handleSendMessage()}
           disabled={!newMessage.trim().length}
         >
