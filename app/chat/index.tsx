@@ -12,8 +12,8 @@ import {
 import { TextInput } from "react-native-gesture-handler";
 import ChatListItem from "../../components/ChatListItem";
 import chatStore from "../../store/chatStore";
-import { Message } from "../../util/types";
 import userStore from "../../store/userStore";
+import { Message } from "../../types/chat";
 
 type itemProps = {
     item: Message;
@@ -98,9 +98,11 @@ const Page = observer(() => {
                 <View className="flex-1 flex justify-center items-center">
                     <Text className="font-light px-4 leading-6 text-gray-900 dark:text-gray-300">
                         No recent chats
+                        {userStore.users.length}
                     </Text>
                 </View>
             ) : (
+
                 <FlatList
                     className="flex-1"
                     data={unique}

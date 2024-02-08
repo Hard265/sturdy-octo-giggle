@@ -13,7 +13,7 @@ import { useColorScheme } from "nativewind";
 import { Stack, router } from "expo-router";
 import { generateMnemonic } from "../../util/cryptography";
 import { usePreventScreenCapture } from "expo-screen-capture";
-import { Themes } from "../../ui/theme";
+import { Themes } from "../../misc/theme";
 
 export default function Page() {
     const [

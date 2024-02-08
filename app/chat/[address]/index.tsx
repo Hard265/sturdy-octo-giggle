@@ -9,8 +9,8 @@ import { Pressable, SectionList, Text, TextInput, View } from "react-native";
 import ChatBubble from "../../../components/ChatBubble";
 import chatStore from "../../../store/chatStore";
 import { organizeMessages } from "../../../util/fn";
-import { Message, MessageSection } from "../../../util/types";
 import constant from "../../../constants/Strings";
+import { Message, MessageSection } from "../../../types/chat";
 
 type ItemProps = {
   item: Message;
@@ -35,13 +35,16 @@ const Page = observer(() => {
   );
 
   const handleSendMessage = () => {
-    chatStore.pushMessage({
-      id: Crypto.randomUUID(),
-      sender: constant.address,
-      content: newMessage,
-      timestamp: new Date().toISOString(),
-      beneficiary: address.toString(),
-    });
+    chatStore.pushMessage(
+      {
+        id: Crypto.randomUUID(),
+        sender: constant.address,
+        content: newMessage,
+        timestamp: new Date().toISOString(),
+        beneficiary: address.toString(),
+      },
+      address as string
+    );
     setNewMessage("");
   };
 
@@ -50,12 +53,7 @@ const Page = observer(() => {
       ? "right"
       : "left";
 
-    return (
-      <ChatBubble
-        message={item}
-        alignment={alignment}
-      />
-    );
+    return <ChatBubble message={item} alignment={alignment} />;
   };
 
   const TimelineTag = ({ section }: SectionHeaderProps) => {
@@ -73,11 +71,7 @@ const Page = observer(() => {
           title: address.toString(),
           headerRight: (props) => (
             <Pressable onPress={() => router.push(`/chat/${address}/profile`)}>
-              <Feather
-                name="user"
-                size={24}
-                color={props.tintColor}
-              />
+              <Feather name="user" size={24} color={props.tintColor} />
             </Pressable>
           ),
         }}

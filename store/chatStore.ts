@@ -6,10 +6,10 @@ import {
 } from "mobx";
 import _ from "lodash";
 import { SQLiteDatabase, openDatabase } from "expo-sqlite";
-import { Message } from "../util/types";
 import * as crypto from "expo-crypto";
 import databaseStore from "./databaseStore";
 import userStore from "./userStore";
+import { Message } from "../types/chat";
 
 class ChatStore {
     messages: Message[] = [];
@@ -22,6 +22,7 @@ class ChatStore {
             deleteMessages: action,
             deleteAll: action,
             user_messages: action,
+            loadMessagesFromDatabase:action,
         });
         this.database = databaseStore.instance;
         this.loadMessagesFromDatabase();
@@ -33,17 +34,18 @@ class ChatStore {
         })
     }
 
-    pushMessage(message: Message) {
+    pushMessage(message: Message, user_address: string) {
         this.messages.push(message);
         this.database.transaction((transaction) => {
             transaction.executeSql(
-                "INSERT INTO messages (id, content, sender, timestamp, beneficiary) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO messages (id, content, sender, timestamp, beneficiary, user_id) VALUES (?, ?, ?, ?, ?, ?)",
                 [
                     message.id,
                     message.content,
                     message.sender,
                     message.timestamp,
                     message.beneficiary,
+                    user_address
                 ],
                 () => {
                     console.log("message pushed");
@@ -106,6 +108,7 @@ class ChatStore {
             },
             true
         );
+        
     }
 }
 

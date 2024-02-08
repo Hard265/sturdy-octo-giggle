@@ -2,8 +2,8 @@ import dayjs from "dayjs";
 
 import isToday from "dayjs/plugin/isToday";
 import isYesterday from "dayjs/plugin/isYesterday";
-import { Message, MessageSection } from "./types";
 import _ from "lodash";
+import { Message, MessageSection } from "../types/chat";
 
 const organizeMessages = (messages: Message[]): MessageSection[] => {
     // Sort messages by timestamp in ascending order

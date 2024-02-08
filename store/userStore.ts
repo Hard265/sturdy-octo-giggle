@@ -2,21 +2,24 @@ import { action, makeObservable, observable, computed } from "mobx";
 
 import { AdminUser, User } from "../types/user";
 import databaseStore from "./databaseStore";
+import _ from "lodash";
+import chatStore from "./chatStore";
 
 class UserStore {
-  #user: AdminUser | null = {
-    address: "4ahdiwdioawdkklsdjiw",
-    privateKey: "",
-    publicKey: "",
+  #user: AdminUser = {
+    address: "[address]",
+    privateKey: "[private-key]",
+    publicKey: "[public-key]",
   };
   users: User[] = [];
 
   constructor() {
     makeObservable(this, {
       users: observable,
+      whoami: computed,
       pushUser: action,
       dropUser: action,
-      whoami: computed
+      user: action,
     });
     this.loadUsersFromDatabase(); // load from database
   }
@@ -27,10 +30,15 @@ class UserStore {
         .rows as unknown as User[];
       this.users.splice(0, this.users.length, ...result);
     });
+    chatStore.loadMessagesFromDatabase();
   }
 
-  get whoami(){
-    return this.#user 
+  get whoami() {
+    return this.#user
+  }
+
+  user(address: string): User {
+    return _.find(this.users, ['address', address]) as User;
   }
 
   async pushUser(user: User) {
@@ -38,24 +46,25 @@ class UserStore {
       tx.executeSqlAsync(
         "INSERT INTO users (address, publicKey) VALUES (?, ?)",
         [user.address, user.publicKey]
+      ).then(() => this.users.push(user)).catch((e) => console.log(e)
       );
-      this.users.push(user);
+      ;
     });
   }
 
-  async dropUser(user: User) {}
+  dropUser(user: User) {
+    databaseStore.instance.transaction((tx) => {
+      tx.executeSql(
+        "DELETE FROM users WHERE address = ?",
+        [user.address]
+      );
+      _.remove(this.users, ['address', user.address]);
+    },
+      (e) => console.log(e),
+      () => this.loadUsersFromDatabase()
+    );
+  }
 
-  // public static privateKey(): string {
-  //   return this.#user?.privateKey ?? "";
-  // }
-
-  // public static publicKey(): string {
-  //   return this.#user?.publicKey ?? "";
-  // }
-
-  // public static address(): string {
-  //   return this.#user?.address ?? "";
-  // }
 }
 
 export default new UserStore();

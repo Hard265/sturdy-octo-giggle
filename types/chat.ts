@@ -10,6 +10,11 @@ interface Message {
   beneficiary: string;
 }
 
+type MessageSection = {
+  title: string;
+  data: Message[];
+}
+
 interface Chat {
   user: User;
   messages: Message[];
@@ -60,4 +65,4 @@ class Chat {
   }
 }
 
-export { Message, Chat };
+export { Message, Chat, MessageSection };
