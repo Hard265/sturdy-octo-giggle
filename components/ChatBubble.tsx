@@ -1,7 +1,7 @@
 import { Pressable, Text } from "react-native";
-import { Message } from "../util/types";
 import dayjs from "dayjs";
 import { useState } from "react";
+import { Message } from "../types/chat";
 
 type MessageComponentProps = {
   message: Message;
@@ -14,7 +14,7 @@ type TimestampProps = {
   timestamp: string;
 };
 
-export default function MessageComponent({
+export default function ChatBubble({
   message,
   alignment,
   selected,

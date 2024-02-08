@@ -22,16 +22,36 @@ class ChatStore {
             deleteMessages: action,
             deleteAll: action,
             user_messages: action,
-            loadMessagesFromDatabase:action,
+            loadMessagesFromDatabase: action,
         });
         this.database = databaseStore.instance;
         this.loadMessagesFromDatabase();
     }
 
-    user_messages(user_address: string) {        
-        return _.filter(this.messages, (message) => {
-            return (message.sender === user_address && message.beneficiary === userStore.whoami?.address) || (message.sender === userStore.whoami?.address && message.beneficiary === user_address);
-        })
+    async user_messages(
+        user_address: string
+    ): Promise<Message[]> {
+        const messages: Message[] = [];
+        await this.database.transactionAsync(
+            async (transaction) => {
+                const results =
+                    await transaction.executeSqlAsync(
+                        "SELECT * FROM messages WHERE (sender = ? AND beneficiary = ?) OR (sender = ? AND beneficiary = ?)",
+                        [
+                            user_address,
+                            userStore.whoami?.address,
+                            userStore.whoami?.address,
+                            user_address,
+                        ]
+                    );
+                messages.splice(
+                    0,
+                    messages.length,
+                    ...(results.rows as unknown as Message[])
+                );
+            }
+        );
+        return messages;
     }
 
     pushMessage(message: Message, user_address: string) {
@@ -45,10 +65,10 @@ class ChatStore {
                     message.sender,
                     message.timestamp,
                     message.beneficiary,
-                    user_address
+                    user_address,
                 ],
                 () => {
-                    console.log("message pushed");
+                    console.log("message added");
                 },
                 (e, i) => {
                     console.log("error", i.message);
@@ -59,7 +79,6 @@ class ChatStore {
     }
 
     deleteMessages(messagesId: string[]) {
-        
         this.database.transaction(
             (transaction) => {
                 messagesId.forEach((id) => {
@@ -69,8 +88,7 @@ class ChatStore {
                     );
                 });
             },
-            ()=>console.log()
-            ,
+            () => console.log(),
             () => {
                 this.messages.filter((value) =>
                     _.includes(messagesId, value.id)
@@ -108,7 +126,6 @@ class ChatStore {
             },
             true
         );
-        
     }
 }
 

@@ -22,7 +22,6 @@ export default function PrivancySettings() {
   const theme = Themes[colorScheme];
 
   const [promptBlock, setPromptBlock] = useState(false);
-  const [promptClear, setPromptClear] = useState(false);
 
   const options: Option[] = [
     {
@@ -41,11 +40,6 @@ export default function PrivancySettings() {
       name: "Block",
       append: <Feather name="toggle-left" size={20} color={theme.text} />,
       cb: () => setPromptBlock(true),
-    },
-    {
-      name: "Clear chat",
-      append: <Feather name="trash" size={20} color={theme.text} />,
-      cb: () => setPromptClear(true),
     },
   ];
 
@@ -69,13 +63,6 @@ export default function PrivancySettings() {
           )
         )}
       </View>
-
-      <AlertDialog
-        show={promptClear}
-        message="Messages in this chat will be deleted permanently. Are you sure?"
-        onRequestConfirm={() => setPromptClear(false)}
-        onRequestDismiss={() => setPromptClear(false)}
-      />
       <AlertDialog
         show={promptBlock}
         message={`Block ${address} from messaging you?`}

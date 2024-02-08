@@ -7,7 +7,7 @@ class DatabaseStore {
 
     constructor() {
         this.instance = openDatabase(
-            "database_dev_2.db",
+            "database_dev_3.db",
             undefined,
             undefined,
             undefined,
