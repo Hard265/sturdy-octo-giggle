@@ -30,9 +30,11 @@ export default function Page() {
   const pattern = /^[a-zA-Z0-9]{34}\?key=[a-zA-Z0-9]{130}$/;
 
   const handleBarCodeScanned = ({ type, data }: BarCodeScannerResult) => {
+    console.log(data);
+    
+    const [address, publicKey] = data.split("?key=");
+    handleProcced({ address, publicKey });
     if (pattern.test(data)) {
-      const [address, publicKey] = data.split("?key=");
-      handleProcced({ address, publicKey });
     }
     // setScanned(true);
   };
